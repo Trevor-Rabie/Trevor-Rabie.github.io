@@ -1,0 +1,1328 @@
+<h1 id="introduction">Introduction</h1>
+<p>Dilav is a blazing fast way to transforms <code>unknown</code> types, into valid known typescript types. Similar to how Typescript provides type assurance at compile time, Dilav provides type assurance at run-time. Dilav is a heteropalindrome of valid.</p>
+<ul>
+<li><a href="#introduction">Introduction</a><ul>
+<li><a href="#why-i-created-this-project">Why I created this project</a></li>
+<li><a href="#relationship-to-zod">Relationship to Zod</a></li>
+<li><a href="#status">Status</a></li>
+<li><a href="#advantages-of-dilav">Advantages of Dilav</a></li>
+</ul>
+</li>
+<li><a href="#installation">Installation</a><ul>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#npm-install">npm install</a></li>
+<li><a href="#basic-usage">Basic usage</a></li>
+</ul>
+</li>
+<li><a href="#documentation">Documentation</a><ul>
+<li><a href="#primitives">Primitives</a></li>
+<li><a href="#coercion-for-primitives">Coercion for primitives</a></li>
+<li><a href="#literals">Literals</a></li>
+<li><a href="#special-literal-types">Special Literal Types</a><ul>
+<li><a href="#nan">NaN</a></li>
+<li><a href="#null">Null</a></li>
+<li><a href="#nullish">Nullish</a></li>
+<li><a href="#any">Any</a></li>
+<li><a href="#unknown">Unknown</a></li>
+<li><a href="#never">Never</a></li>
+<li><a href="#void">Void</a></li>
+<li><a href="#undefined">Undefined</a></li>
+</ul>
+</li>
+<li><a href="#strings">Strings</a><ul>
+<li><a href="#iso-datetimes">ISO datetimes</a></li>
+<li><a href="#vcustomizestring"><code>v.customize.string</code></a></li>
+</ul>
+</li>
+<li><a href="#numbers">Numbers</a><ul>
+<li><a href="#vcustomizenumber"><code>v.customize.number</code></a></li>
+</ul>
+</li>
+<li><a href="#bigints">BigInts</a><ul>
+<li><a href="#vcustomizebigint"><code>v.customize.bigInt</code></a></li>
+</ul>
+</li>
+<li><a href="#booleans">Booleans</a><ul>
+<li><a href="#vcustomizeboolean"><code>v.customize.boolean</code></a></li>
+</ul>
+</li>
+<li><a href="#dates">Dates</a><ul>
+<li><a href="#vcustomizedate"><code>v.customize.date</code></a></li>
+</ul>
+</li>
+<li><a href="#enums">Enums</a><ul>
+<li><a href="#string-enums"><code>string</code> enums</a></li>
+<li><a href="#typescript-enums">Typescript enums</a></li>
+<li><a href="#const-enums"><code>const</code> enums</a></li>
+</ul>
+</li>
+<li><a href="#optionals">Optionals</a></li>
+<li><a href="#nullables">Nullables</a></li>
+<li><a href="#nullishables">Nullishables</a></li>
+<li><a href="#objects">Objects</a><ul>
+<li><a href="#definition"><code>.definition</code></a></li>
+<li><a href="#extends"><code>.extends</code></a></li>
+<li><a href="#merge"><code>.merge</code></a></li>
+<li><a href="#pickomit"><code>.pick/.omit</code></a></li>
+<li><a href="#partial"><code>.partial</code></a></li>
+<li><a href="#deeppartial"><code>.deepPartial</code></a></li>
+<li><a href="#required"><code>.required</code></a></li>
+<li><a href="#passthrough"><code>.passThrough</code></a></li>
+<li><a href="#strict"><code>.strict</code></a></li>
+<li><a href="#catchall"><code>.catchAll</code></a></li>
+<li><a href="#vobject"><code>v.object</code></a></li>
+</ul>
+</li>
+<li><a href="#arrays">Arrays</a><ul>
+<li><a href="#definition-1">.definition</a></li>
+<li><a href="#validations">validations</a></li>
+<li><a href="#spread"><code>.spread</code></a></li>
+<li><a href="#varray"><code>v.array</code></a></li>
+</ul>
+</li>
+<li><a href="#unions">Unions</a><ul>
+<li><a href="#discriminated-unions">Discriminated Unions</a></li>
+<li><a href="#string-literal-unions">String Literal Unions</a></li>
+</ul>
+</li>
+<li><a href="#intersections">Intersections</a></li>
+<li><a href="#promises">Promises</a></li>
+<li><a href="#instanceofs">InstanceOfs</a></li>
+<li><a href="#records">Records</a></li>
+<li><a href="#maps">Maps</a></li>
+<li><a href="#sets">Sets</a></li>
+<li><a href="#recursive-types">Recursive types</a></li>
+<li><a href="#functions">Functions</a></li>
+<li><a href="#custom-schemas">Custom Schemas</a></li>
+<li><a href="#schema-methods">Schema Methods</a><ul>
+<li><a href="#parse"><code>.parse</code></a></li>
+<li><a href="#parseasync"><code>.parseAsync</code></a></li>
+<li><a href="#safeparse"><code>.safeParse</code></a></li>
+<li><a href="#safeparseasync"><code>.safeParseAsync</code></a></li>
+<li><a href="#optional"><code>.optional</code></a></li>
+<li><a href="#nullable"><code>.nullable</code></a></li>
+<li><a href="#nullish-1"><code>.nullish</code></a></li>
+<li><a href="#array"><code>.array</code></a></li>
+<li><a href="#promise"><code>.promise</code></a></li>
+<li><a href="#or"><code>.or</code></a></li>
+<li><a href="#and"><code>.and</code></a></li>
+<li><a href="#pipe"><code>.pipe</code></a></li>
+<li><a href="#type"><code>.type</code></a></li>
+<li><a href="#basetype"><code>.baseType</code></a></li>
+<li><a href="#customvalidation"><code>.customValidation</code></a></li>
+<li><a href="#customvalidationasync"><code>.customValidationAsync</code></a></li>
+<li><a href="#transformation-methods">transformation methods</a><ul>
+<li><a href="#preprocess"><code>.preprocess</code></a></li>
+<li><a href="#postprocess"><code>.postprocess</code></a></li>
+<li><a href="#transform"><code>.transform</code></a></li>
+<li><a href="#catch"><code>.catch</code></a></li>
+<li><a href="#default"><code>.default</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#other-topics">Other Topics</a><ul>
+<li><a href="#type-inference">Type inference</a></li>
+<li><a href="#writing-generic-functions">Writing generic functions</a></li>
+<li><a href="#error-handling">Error handling</a><ul>
+<li><a href="#defaulterrorfn"><code>DefaultErrorFn</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="why-i-created-this-project">Why I created this project</h2>
+<p>I&#39;m currently unemployed and to showcase my skills I developed this project. If you like it and know of someone needing similar projects created, please contact me.</p>
+<h2 id="relationship-to-zod">Relationship to Zod</h2>
+<p>In developing Dilav, Zod&#39;s excellent public API was leveraged, mean Dilav provides near functional parity to Zod and it passes most of Zod&#39;s tests with minor changes. Dilav was written from scratch and shares no code with Zod, other than a few string validation <code>regex&#39;s</code></p>
+<p>Whilst the APIs are similar, Dilav includes significant changes and is therefore not a drop in replacement.</p>
+<p>Zod has ~3,950 lines of JavaScript code and Dilav has ~2,900.</p>
+<p>The benchmarks in the test folder shows Dilav is ~240% faster on my computer for Benchmark 1 which parses objects and arrays and 890% faster for Benchmark 2 which parses only a string and 250% faster for Benchmark 3 which only parses a string. These numbers appear high to me and I haven&#39;t yet fully explored why they are so high, so they should be taken with a pinch of salt.</p>
+<p><strong>Select API changes from Zod:</strong></p>
+<ul>
+<li><code>v.Object</code> by default returns the original object and not a new object</li>
+<li><code>v.Object</code> by default doesn&#39;t allow unspecified properties</li>
+<li><code>z.tuple</code> functionality has been merged into <code>v.array</code></li>
+<li><code>z.discriminatedUnion</code> functionality was merged into <code>v.union</code></li>
+<li><code>z.nativeEnum</code> functionality was merged into <code>v.enum</code></li>
+<li><code>safeParse</code> instead of returning an object, returns an array of type <code>ResultError</code></li>
+<li>most primitives do not need to be called - <code>v.string</code> vs <code>z.string()</code></li>
+<li>customisation of errors is done via functions, rather than strings</li>
+<li>minor capitalisation and spelling changes to methods</li>
+<li><code>z.ZodType</code> is split across multiple types</li>
+<li><code>.refine</code> and <code>z.superRefine</code> are not replaced by <code>.customValidation</code>, <code>.preprocess</code> and <code>.postprocess</code> enable one to appropriately customise input values, validations, errors and return values</li>
+<li><code>.describe</code> not implemented</li>
+<li><code>.brand</code> not implemented</li>
+</ul>
+<h2 id="status">Status</h2>
+<p>Dilav is in it&#39;s first alpha release, to seek feedback from people who may be interested in the project. There are a number of things that may be improved in the public API in subsequent releases. I&#39;m also considering releasing an even more performance focused API. Dilav follows Zod&#39;s example with regards to async validations, but the API could be better so I may rework that API entirely.</p>
+<h2 id="advantages-of-dilav">Advantages of Dilav</h2>
+<ul>
+<li>It&#39;s performant</li>
+<li>It&#39;s small</li>
+<li>It has no dependencies</li>
+<li>It should be tree shakeable allowing one to use only the parts one needs</li>
+<li>It&#39;s architecture is simple, meaning once stabilised it should be highly reliable</li>
+</ul>
+<h1 id="installation">Installation</h1>
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li><p>TypeScript 5.0+!</p>
+</li>
+<li><p>Enable <code>strict</code> mode in <code>tsconfig.json</code>:</p>
+<pre><code class="lang-typescript">{
+  <span class="hljs-comment">// ...</span>
+  <span class="hljs-string">"compilerOptions"</span>: {
+    <span class="hljs-comment">// ...</span>
+    <span class="hljs-string">"strict"</span>: <span class="hljs-literal">true</span>
+  }
+}
+</code></pre>
+</li>
+</ul>
+<h2 id="npm-install">npm install</h2>
+<pre><code class="lang-sh">npm <span class="hljs-keyword">install </span><span class="hljs-keyword">Dilav </span>      <span class="hljs-comment"># npm</span>
+</code></pre>
+<h2 id="basic-usage">Basic usage</h2>
+<p>Creating a simple string schema</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { v } from <span class="hljs-string">'dilav'</span>
+
+<span class="hljs-comment">// creating a schema for strings</span>
+<span class="hljs-keyword">const</span> schema = v.<span class="hljs-keyword">string</span>
+
+<span class="hljs-comment">// parsing</span>
+<span class="hljs-keyword">const</span> willParseToString = schema.parse(<span class="hljs-string">'hello'</span>) <span class="hljs-comment">// =&gt; "hello"</span>
+<span class="hljs-keyword">const</span> willThrow = schema.parse(<span class="hljs-number">12</span>) <span class="hljs-comment">// =&gt; throws an error</span>
+
+<span class="hljs-comment">// safe parsing doesn't throw error if validation fails</span>
+<span class="hljs-keyword">const</span> willParseSafely = schema.safeParse(<span class="hljs-string">'hello'</span>) <span class="hljs-comment">// =&gt; [ undefined, "hello" ]</span>
+<span class="hljs-keyword">const</span> willParseSafely2 = schema.safeParse(<span class="hljs-number">12</span>) <span class="hljs-comment">// =&gt; [ {input: 12, errors: ['12 is not a string']}  ]</span>
+</code></pre>
+<p>Creating an object schema</p>
+<pre><code class="lang-typescript">import { v } <span class="hljs-keyword">from</span> <span class="hljs-string">'dilav'</span>
+
+<span class="hljs-keyword">const</span> userSchema = v.<span class="hljs-keyword">object</span>({ username: v.<span class="hljs-keyword">string</span> })
+type UserType = v.Infer&lt;<span class="hljs-keyword">typeof</span> userSchema&gt; <span class="hljs-comment">//  infers the schema type: { username: string }</span>
+<span class="hljs-keyword">const</span> user = userSchema.parse({ username: <span class="hljs-string">'Fred'</span> }) <span class="hljs-comment">// =&gt; { username: 'Fred' }</span>
+</code></pre>
+<h1 id="documentation">Documentation</h1>
+<h2 id="primitives">Primitives</h2>
+<pre><code class="lang-typescript"><span class="hljs-comment">// primitive values</span>
+v<span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'a'</span>)
+v<span class="hljs-selector-class">.number</span><span class="hljs-selector-class">.parse</span>(<span class="hljs-number">1</span>)
+v<span class="hljs-selector-class">.bigInt</span><span class="hljs-selector-class">.parse</span>(<span class="hljs-number">2</span>n)
+v<span class="hljs-selector-class">.boolean</span><span class="hljs-selector-class">.parse</span>(true)
+v<span class="hljs-selector-class">.date</span><span class="hljs-selector-class">.parse</span>(new Date())
+v<span class="hljs-selector-class">.symbol</span><span class="hljs-selector-class">.parse</span>(Symbol(<span class="hljs-string">'x'</span>))
+v<span class="hljs-selector-class">.undefined</span><span class="hljs-selector-class">.parse</span>(undefined)
+v<span class="hljs-selector-class">.null</span><span class="hljs-selector-class">.parse</span>(null)
+<span class="hljs-comment">// catch-all types allows any value</span>
+v<span class="hljs-selector-class">.any</span><span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'whatever'</span>)
+v<span class="hljs-selector-class">.unknown</span><span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'anything'</span>)
+<span class="hljs-comment">// never type allows no values</span>
+v<span class="hljs-selector-class">.never</span><span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'will throw!'</span>) <span class="hljs-comment">// throws</span>
+</code></pre>
+<h2 id="coercion-for-primitives">Coercion for primitives</h2>
+<p>Dilav provides convenient ways to coerce primitive values:</p>
+<pre><code class="lang-typescript">const <span class="hljs-keyword">schema</span> = v.string.coerce
+<span class="hljs-keyword">schema</span>.parse(<span class="hljs-string">'fred'</span>) // =&gt; <span class="hljs-string">"fred"</span>
+<span class="hljs-keyword">schema</span>.parse(<span class="hljs-number">13</span>) // =&gt; <span class="hljs-string">"13"</span>
+<span class="hljs-keyword">schema</span>.parse(<span class="hljs-literal">false</span>) // =&gt; <span class="hljs-string">"false"</span>
+<span class="hljs-keyword">schema</span>.email().min(<span class="hljs-number">5</span>).parse(<span class="hljs-string">'notEmail'</span>) // throws
+</code></pre>
+<p>These primitive schemas support coercion:</p>
+<pre><code class="lang-typescript">v<span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.coerce</span><span class="hljs-selector-class">.parse</span>(true) <span class="hljs-comment">// String(input)</span>
+v<span class="hljs-selector-class">.number</span><span class="hljs-selector-class">.coerce</span><span class="hljs-selector-class">.parse</span>(true) <span class="hljs-comment">// Number(input)</span>
+v<span class="hljs-selector-class">.boolean</span><span class="hljs-selector-class">.coerce</span><span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'1'</span>) <span class="hljs-comment">// Boolean(input)</span>
+v<span class="hljs-selector-class">.bigInt</span><span class="hljs-selector-class">.coerce</span><span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'1'</span>) <span class="hljs-comment">// BigInt(input)</span>
+v<span class="hljs-selector-class">.date</span><span class="hljs-selector-class">.coerce</span><span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'1'</span>) <span class="hljs-comment">// new Date(input)</span>
+</code></pre>
+<h2 id="literals">Literals</h2>
+<p>Literal schemas represent a <a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types">literal type</a> and only parse that exact type.</p>
+<pre><code class="lang-typescript">v.literal(<span class="hljs-string">'hello'</span>).parse(<span class="hljs-string">'hello'</span>)
+v.literal(<span class="hljs-number">7</span>).parse(<span class="hljs-number">7</span>)
+v.literal(<span class="hljs-number">3</span>n).parse(<span class="hljs-number">3</span>n)
+<span class="hljs-keyword">const</span> aObject = { a: 1 }
+v.literal(aObject).parse(aObject)
+<span class="hljs-keyword">const</span> aSymbol = Symbol('a')
+v.literal(aSymbol).parse(aSymbol)
+<span class="hljs-keyword">const</span> aDate = <span class="hljs-keyword">new</span> Date()
+v.literal(aDate).parse(aDate)
+// retrieve literal value
+v.literal('hello').definition.literal // =&gt; 'hello'
+</code></pre>
+<h2 id="special-literal-types">Special Literal Types</h2>
+<h3 id="nan">NaN</h3>
+<pre><code class="lang-typescript">v<span class="hljs-selector-class">.NaN</span><span class="hljs-selector-class">.parse</span>(NaN)
+v<span class="hljs-selector-class">.customize</span><span class="hljs-selector-class">.NaN</span>({ invalidValueFn: (value) =&gt; `${value} is not NaN` }).parse(<span class="hljs-number">1</span>) <span class="hljs-comment">// throws</span>
+</code></pre>
+<h3 id="null">Null</h3>
+<pre><code class="lang-typescript">v.<span class="hljs-built_in">null</span>.<span class="hljs-built_in">parse</span>(<span class="hljs-built_in">null</span>)
+v.customize.<span class="hljs-built_in">null</span>({ invalidValueFn: (<span class="hljs-built_in">value</span>) =&gt; `${<span class="hljs-built_in">value</span>} is <span class="hljs-built_in">not</span> <span class="hljs-built_in">null</span>` }).<span class="hljs-built_in">parse</span>(<span class="hljs-number">1</span>) <span class="hljs-comment">// throws</span>
+</code></pre>
+<h3 id="nullish">Nullish</h3>
+<pre><code class="lang-typescript">v<span class="hljs-selector-class">.nullish</span><span class="hljs-selector-class">.parse</span>(null)
+v<span class="hljs-selector-class">.nullish</span><span class="hljs-selector-class">.parse</span>(undefined)
+<span class="hljs-comment">// NOTE the .nullishL not .nullish</span>
+v<span class="hljs-selector-class">.customize</span><span class="hljs-selector-class">.nullishL</span>({ invalidValueFn: (value) =&gt; `${value} is not nullish` }).parse(<span class="hljs-number">1</span>) <span class="hljs-comment">// throws</span>
+</code></pre>
+<h3 id="any">Any</h3>
+<pre><code class="lang-typescript">v<span class="hljs-selector-class">.any</span><span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'hello'</span>)
+</code></pre>
+<h3 id="unknown">Unknown</h3>
+<pre><code class="lang-typescript">v<span class="hljs-selector-class">.unknown</span><span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'hello'</span>)
+</code></pre>
+<h3 id="never">Never</h3>
+<pre><code class="lang-typescript">v<span class="hljs-selector-class">.never</span><span class="hljs-selector-class">.parse</span>(<span class="hljs-number">1</span>) <span class="hljs-comment">// throws</span>
+v<span class="hljs-selector-class">.customize</span><span class="hljs-selector-class">.never</span>({ invalidValueFn: (value) =&gt; `${value} is not never` }).parse(<span class="hljs-number">1</span>) <span class="hljs-comment">// throws</span>
+</code></pre>
+<h3 id="void">Void</h3>
+<pre><code class="lang-typescript">v<span class="hljs-selector-class">.void</span><span class="hljs-selector-class">.parse</span>()
+v<span class="hljs-selector-class">.void</span><span class="hljs-selector-class">.parse</span>(undefined)
+v<span class="hljs-selector-class">.customize</span><span class="hljs-selector-class">.void</span>({ invalidValueFn: (value) =&gt; `${value} is not void` }).parse(<span class="hljs-number">1</span>) <span class="hljs-comment">// throws</span>
+</code></pre>
+<h3 id="undefined">Undefined</h3>
+<pre><code class="lang-typescript">v.<span class="hljs-literal">undefined</span>.parse(<span class="hljs-literal">undefined</span>)
+v.customize.<span class="hljs-literal">undefined</span>({ invalidValueFn: <span class="hljs-function"><span class="hljs-params">(value)</span> =&gt;</span> `<span class="javascript">${value} is not <span class="hljs-literal">undefined</span></span>` }).parse(<span class="hljs-number">1</span>) <span class="hljs-regexp">//</span> throws
+</code></pre>
+<h2 id="strings">Strings</h2>
+<pre><code class="lang-typescript">v.<span class="hljs-keyword">string</span>.parse(<span class="hljs-string">'abc'</span>)
+v.<span class="hljs-keyword">string</span>.email().parse(<span class="hljs-string">'a@a.com'</span>) <span class="hljs-comment">// =&gt; 'a@a.com'</span>
+v.<span class="hljs-keyword">string</span>.coerce.parse(<span class="hljs-number">1</span>) <span class="hljs-comment">// =&gt; '1'</span>
+
+<span class="hljs-comment">// a function can be provided that returns a custom error message:</span>
+<span class="hljs-keyword">const</span> foo = v.<span class="hljs-keyword">string</span>.custom({ parseStringError: (value) =&gt; <span class="hljs-string">`didn't parse`</span> }).safeParse(<span class="hljs-number">1</span>)
+<span class="hljs-keyword">const</span> fooError = v.firstErrorFromResultError(foo) <span class="hljs-comment">// =&gt; `didn't parse`</span>
+</code></pre>
+<p>Dilav includes the following string-specific validations:</p>
+<pre><code class="lang-typescript"><span class="hljs-comment">// validations</span>
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.max</span>(<span class="hljs-number">5</span>)<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'12345'</span>)
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.min</span>(<span class="hljs-number">5</span>)<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'12345'</span>)
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.length</span>(<span class="hljs-number">5</span>)<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'12345'</span>)
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.email</span>()<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'email@email.com'</span>)
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.url</span>()<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'http://url.com'</span>)
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.emoji</span>()<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'😀'</span>)
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.uuid</span>()<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'123e4567-e89b-12d3-a456-426614174000'</span>)
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.cuid</span>()<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'ch72gsb320000udocl363eofy'</span>)
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.cuid2</span>()<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'tz4a98xxat96iws9zmbrgj3a'</span>)
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.ulid</span>()<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'01ARZ3NDEKTSV4RRFFQ69G5FAV'</span>)
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.regex</span>(/.*/)<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'ABC'</span>)
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.includes</span>(<span class="hljs-string">'A'</span>)<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'ABC'</span>)
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.startsWith</span>(<span class="hljs-string">'A'</span>)<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'ABC'</span>)
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.endsWith</span>(<span class="hljs-string">'C'</span>)<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'ABC'</span>)
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.datetime</span>()<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'2020-01-01T00:00:00Z'</span>)
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.ip</span>()<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'192.168.1.1'</span>)
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.ipv4</span>()<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'192.168.1.1'</span>)
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.ipv6</span>()<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'2001:0db8:0000:0000:0000:ff00:0042:8329'</span>)
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.notEmpty</span>()<span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'ABC'</span>)
+
+<span class="hljs-comment">// custom validations can be added:</span>
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.string</span>
+  <span class="hljs-selector-class">.customValidation</span>((stringValue) =&gt;
+    stringValue === stringValue.toUpperCase() ? <span class="hljs-attribute">undefined </span>: <span class="hljs-string">'error'</span>,
+  )
+  <span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'ABC'</span>)
+</code></pre>
+<p>One can often provide customised validation error messages when adding a validation.</p>
+<pre><code class="lang-typescript">v.<span class="hljs-keyword">string</span>.max(<span class="hljs-number">5</span>, (<span class="hljs-keyword">value</span>) =&gt; `${<span class="hljs-keyword">value</span>} <span class="hljs-keyword">is</span> too <span class="hljs-keyword">long</span>!`).parse(<span class="hljs-string">'12345'</span>)
+</code></pre>
+<p>String validations have the following call signatures:</p>
+<pre><code class="lang-typescript"><span class="hljs-built_in">type</span> ValidationError = <span class="hljs-built_in">string</span>
+<span class="hljs-built_in">type</span> StringValidationFn = <span class="hljs-function"><span class="hljs-params">(value: <span class="hljs-built_in">string</span>)</span> =&gt;</span> ValidationError | undefined
+</code></pre>
+<ul>
+<li><code>max(length: number, errorFn?: DefaultErrorFn[&#39;maximumStringLength&#39;]): StringValidationFn</code></li>
+<li><code>min(length: number, errorFn?: DefaultErrorFn[&#39;minimumStringLength&#39;]): StringValidationFn</code></li>
+<li><code>length(length: number, errorFn?: DefaultErrorFn[&#39;stringLength&#39;]): StringValidationFn</code></li>
+<li><code>notEmpty(errorFn?: DefaultErrorFn[&#39;notEmptyString&#39;]): StringValidationFn</code></li>
+<li><code>beOneOf(items: string[], errorFn?: DefaultErrorFn[&#39;beOneOf&#39;]): StringValidationFn</code></li>
+<li><code>regex(regex: RegExp, invalidFn?: DefaultErrorFn[&#39;maximumStringLength&#39;]): StringValidationFn</code></li>
+<li><code>email(errorFn?: DefaultErrorFn[&#39;validEmail&#39;]): StringValidationFn</code></li>
+<li><code>cuid(errorFn?: DefaultErrorFn[&#39;validCuid&#39;]): StringValidationFn</code></li>
+<li><code>cuid2(errorFn?: DefaultErrorFn[&#39;validCuid2&#39;]): StringValidationFn</code></li>
+<li><code>uuid(errorFn?: DefaultErrorFn[&#39;validUuid&#39;]): StringValidationFn</code></li>
+<li><code>url(errorFn?: DefaultErrorFn[&#39;validURL&#39;]): StringValidationFn</code></li>
+<li><code>ulid(errorFn?: DefaultErrorFn[&#39;validUlid&#39;]): StringValidationFn</code></li>
+<li><code>emoji(errorFn?: DefaultErrorFn[&#39;validEmoji&#39;]): StringValidationFn</code></li>
+<li><code>ipv4(errorFn?: DefaultErrorFn[&#39;validIpv4&#39;]): StringValidationFn</code></li>
+<li><code>ipv6(errorFn?: DefaultErrorFn[&#39;validIpv6&#39;]): StringValidationFn</code></li>
+<li><code>ip(invalidIpFn?: DefaultErrorFn[&#39;validIp&#39;]): StringValidationFn</code></li>
+<li><code>datetime(options?: {  precision?: number;  offset?: boolean;    validDateTimeFn?: DefaultErrorFn[&#39;validDateTime&#39;]}): StringValidationFn</code></li>
+<li><code>includes(includedString: string, position?: number, errorFn?: DefaultErrorFn[&#39;includes&#39;]): StringValidationFn</code></li>
+<li><code>startsWith(startString: string, errorFn?: DefaultErrorFn[&#39;startsWith&#39;]): StringValidationFn</code></li>
+<li><code>endsWith(endString: string, errorFn?: DefaultErrorFn[&#39;endsWith&#39;]): StringValidationFn</code></li>
+</ul>
+<p><a href="#defaulterrorfn">DefaultErrorFn</a> contains all validation error messages.</p>
+<h3 id="iso-datetimes">ISO datetimes</h3>
+<p>The <code>v.string.datetime()</code> method defaults to UTC validation: no timezone offsets with arbitrary sub-second decimal precision.</p>
+<pre><code class="lang-typescript">const datetime = v<span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.datetime</span>()
+
+datetime.parse(<span class="hljs-string">'2020-01-01T00:00:00Z'</span>)
+datetime.parse(<span class="hljs-string">'2020-01-01T00:00:00.123Z'</span>)
+datetime.parse(<span class="hljs-string">'2020-01-01T00:00:00.123456Z'</span>)
+<span class="hljs-function"><span class="hljs-title">expect</span><span class="hljs-params">(()</span></span> =&gt; datetime.parse(<span class="hljs-string">'2020-01-01T00:00:00+02:00'</span>)).toThrow()
+</code></pre>
+<p>Timezone offsets can be allowed by setting the <code>offset</code> option to <code>true</code>.</p>
+<pre><code class="lang-typescript">const datetime = v.string.datetime({ offset: true })
+
+datetime.parse('2020<span class="hljs-string">-01</span><span class="hljs-string">-01</span>T00:00:00<span class="hljs-string">+02</span>:00')
+datetime.parse('2020<span class="hljs-string">-01</span><span class="hljs-string">-01</span>T00:00:00.123<span class="hljs-string">+02</span>:00')
+datetime.parse('2020<span class="hljs-string">-01</span><span class="hljs-string">-01</span>T00:00:00.123<span class="hljs-string">+0200</span>')
+datetime.parse('2020<span class="hljs-string">-01</span><span class="hljs-string">-01</span>T00:00:00.123<span class="hljs-string">+02</span>')
+datetime.parse('2020<span class="hljs-string">-01</span><span class="hljs-string">-01</span>T00:00:00Z')
+</code></pre>
+<p>You can additionally constrain the allowable <code>precision</code>. By default, arbitrary sub-second precision is supported.</p>
+<pre><code class="lang-typescript">const datetime = v<span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.datetime</span>({ precision: <span class="hljs-number">3</span> })
+
+datetime.parse(<span class="hljs-string">'2020-01-01T00:00:00.123Z'</span>)
+<span class="hljs-function"><span class="hljs-title">expect</span><span class="hljs-params">(()</span></span> =&gt; datetime.parse(<span class="hljs-string">'2020-01-01T00:00:00.123456Z'</span>)).toThrow()
+<span class="hljs-function"><span class="hljs-title">expect</span><span class="hljs-params">(()</span></span> =&gt; datetime.parse(<span class="hljs-string">'2020-01-01T00:00:00Z'</span>)).toThrow()
+</code></pre>
+<h3 id="-v-customize-string-"><code>v.customize.string</code></h3>
+<pre><code class="lang-typescript">v.customize.<span class="hljs-built_in">string</span>(
+  options?: {
+    parseStringError? : <span class="hljs-function"><span class="hljs-params">(value: unknown)</span> =&gt;</span> <span class="hljs-built_in">string</span>,  // function that returns a <span class="hljs-built_in">string</span> on parsing <span class="hljs-built_in">error</span>
+  })
+</code></pre>
+<h2 id="numbers">Numbers</h2>
+<p>Includes a handful of number-specific validations:</p>
+<pre><code class="lang-typescript">v<span class="hljs-selector-class">.number</span><span class="hljs-selector-class">.gt</span>(<span class="hljs-number">5</span>).parse(<span class="hljs-number">6</span>)
+v<span class="hljs-selector-class">.number</span><span class="hljs-selector-class">.gte</span>(<span class="hljs-number">5</span>).parse(<span class="hljs-number">5</span>) <span class="hljs-comment">// alias .min(5)</span>
+v<span class="hljs-selector-class">.number</span><span class="hljs-selector-class">.lt</span>(<span class="hljs-number">5</span>).parse(<span class="hljs-number">4</span>)
+v<span class="hljs-selector-class">.number</span><span class="hljs-selector-class">.lte</span>(<span class="hljs-number">5</span>).parse(<span class="hljs-number">5</span>) <span class="hljs-comment">// alias .max(5)</span>
+
+v<span class="hljs-selector-class">.number</span><span class="hljs-selector-class">.int</span>().parse(<span class="hljs-number">5</span>) <span class="hljs-comment">// value must be an integer</span>
+
+v<span class="hljs-selector-class">.number</span><span class="hljs-selector-class">.positive</span>().parse(<span class="hljs-number">1</span>) <span class="hljs-comment">//  &gt; 0</span>
+v<span class="hljs-selector-class">.number</span><span class="hljs-selector-class">.nonnegative</span>().parse(<span class="hljs-number">0</span>) <span class="hljs-comment">//  &gt;= 0</span>
+v<span class="hljs-selector-class">.number</span><span class="hljs-selector-class">.negative</span>().parse(-<span class="hljs-number">1</span>) <span class="hljs-comment">//  &lt; 0</span>
+v<span class="hljs-selector-class">.number</span><span class="hljs-selector-class">.nonpositive</span>().parse(<span class="hljs-number">0</span>) <span class="hljs-comment">//  &lt;= 0</span>
+
+v<span class="hljs-selector-class">.number</span><span class="hljs-selector-class">.multipleOf</span>(<span class="hljs-number">5</span>).parse(<span class="hljs-number">25</span>) <span class="hljs-comment">// Evenly divisible by 5. Alias .step(5)</span>
+
+v<span class="hljs-selector-class">.number</span><span class="hljs-selector-class">.finite</span>().parse(<span class="hljs-number">1</span>) <span class="hljs-comment">// value must be finite, not Infinity or -Infinity</span>
+v<span class="hljs-selector-class">.number</span><span class="hljs-selector-class">.safe</span>() <span class="hljs-comment">// value must be between Number.MIN_SAFE_INTEGER and Number.MAX_SAFE_INTEGER</span>
+</code></pre>
+<p>Number validations have the following call signatures:</p>
+<pre><code class="lang-typescript"><span class="hljs-built_in">type</span> ValidationError = <span class="hljs-built_in">string</span>
+<span class="hljs-built_in">type</span> NumberValidationFn = <span class="hljs-function"><span class="hljs-params">(value: number)</span> =&gt;</span> ValidationError | undefined
+</code></pre>
+<ul>
+<li><code>greaterThan(number: number, errorFn?: DefaultErrorFn[&#39;greaterThan&#39;]): NumberValidationFn;</code></li>
+<li><code>greaterThanOrEqualTo(number: number, errorFn?: DefaultErrorFn[&#39;greaterThanOrEqualTo&#39;]): NumberValidationFn;</code></li>
+<li><code>lesserThan(number: number, errorFn?: DefaultErrorFn[&#39;lesserThan&#39;]): NumberValidationFn;</code></li>
+<li><code>lesserThanOrEqualTo(number: number, errorFn?: DefaultErrorFn[&#39;lesserThanOrEqualTo&#39;]): NumberValidationFn;</code></li>
+<li><code>integer(errorFn?: DefaultErrorFn[&#39;integer&#39;]): NumberValidationFn;</code></li>
+<li><code>positive(errorFn?: DefaultErrorFn[&#39;positive&#39;]): NumberValidationFn;</code></li>
+<li><code>nonNegative(errorFn?: DefaultErrorFn[&#39;nonNegative&#39;]): NumberValidationFn;</code></li>
+<li><code>negative(errorFn?: DefaultErrorFn[&#39;negative&#39;]): NumberValidationFn;</code></li>
+<li><code>nonPositive(errorFn?: DefaultErrorFn[&#39;nonPositive&#39;]): NumberValidationFn;</code></li>
+<li><code>notNaN(errorFn?: DefaultErrorFn[&#39;notNaN&#39;]): NumberValidationFn;</code></li>
+<li><code>multipleOf(number: number, errorFn?: DefaultErrorFn[&#39;multipleOf&#39;]): NumberValidationFn;</code></li>
+<li><code>finite(errorFn?: DefaultErrorFn[&#39;finite&#39;]): NumberValidationFn;</code></li>
+<li><code>safe(errorFn?: DefaultErrorFn[&#39;safe&#39;]): NumberValidationFn;</code></li>
+</ul>
+<p><a href="#defaulterrorfn">DefaultErrorFn</a> contains all validation error messages.</p>
+<h3 id="-v-customize-number-"><code>v.customize.number</code></h3>
+<pre><code class="lang-typescript">v.customize.number(
+  options?: {
+    parseNumberError? : <span class="hljs-function"><span class="hljs-params">(value: unknown)</span> =&gt;</span> <span class="hljs-built_in">string</span>,  // function that returns <span class="hljs-built_in">string</span> on parsing <span class="hljs-built_in">error</span>
+  }) // =&gt; v.Number
+</code></pre>
+<h2 id="bigints">BigInts</h2>
+<p>Dilav includes a handful of bigint-specific validations.</p>
+<pre><code class="lang-typescript">v<span class="hljs-selector-class">.bigInt</span><span class="hljs-selector-class">.gt</span>(<span class="hljs-number">5</span>n)
+v<span class="hljs-selector-class">.bigInt</span><span class="hljs-selector-class">.gte</span>(<span class="hljs-number">5</span>n) <span class="hljs-comment">// alias `.min(5n)`</span>
+v<span class="hljs-selector-class">.bigInt</span><span class="hljs-selector-class">.lt</span>(<span class="hljs-number">5</span>n)
+v<span class="hljs-selector-class">.bigInt</span><span class="hljs-selector-class">.lte</span>(<span class="hljs-number">5</span>n) <span class="hljs-comment">// alias `.max(5n)`</span>
+
+v<span class="hljs-selector-class">.bigInt</span><span class="hljs-selector-class">.positive</span>() <span class="hljs-comment">// &gt; 0n</span>
+v<span class="hljs-selector-class">.bigInt</span><span class="hljs-selector-class">.nonNegative</span>() <span class="hljs-comment">// &gt;= 0n</span>
+v<span class="hljs-selector-class">.bigInt</span><span class="hljs-selector-class">.negative</span>() <span class="hljs-comment">// &lt; 0n</span>
+v<span class="hljs-selector-class">.bigInt</span><span class="hljs-selector-class">.nonPositive</span>() <span class="hljs-comment">// &lt;= 0n</span>
+</code></pre>
+<pre><code class="lang-typescript"><span class="hljs-built_in">type</span> ValidationError = <span class="hljs-built_in">string</span>
+<span class="hljs-built_in">type</span> BigIntValidationFn = <span class="hljs-function"><span class="hljs-params">(value: bigint)</span> =&gt;</span> ValidationError | undefined
+</code></pre>
+<ul>
+<li><code>greaterThan(bigint: bigint, errorFn?: DefaultErrorFn[&#39;bigIntGreaterThan&#39;]): BigIntValidationFn</code></li>
+<li><code>greaterThanOrEqualTo(bigint: bigint,errorFn?: DefaultErrorFn[&#39;bigIntGreaterThanOrEqualTo&#39;]): BigIntValidationFn</code></li>
+<li><code>lesserThan(bigint: bigint, errorFn?: DefaultErrorFn[&#39;bigIntLesserThan&#39;]): BigIntValidationFn</code></li>
+<li><code>lesserThanOrEqualTo(bigint: bigint,errorFn?: DefaultErrorFn[&#39;bigIntLesserThanOrEqualTo&#39;]): BigIntValidationFn</code></li>
+<li><code>integer(errorFn?: DefaultErrorFn[&#39;bigIntInteger&#39;]): BigIntValidationFn</code></li>
+<li><code>positive(errorFn?: DefaultErrorFn[&#39;bigIntPositive&#39;]): BigIntValidationFn</code></li>
+<li><code>nonNegative(errorFn?: DefaultErrorFn[&#39;bigIntNonNegative&#39;]): BigIntValidationFn</code></li>
+<li><code>negative(errorFn?: DefaultErrorFn[&#39;bigIntNegative&#39;]): BigIntValidationFn</code></li>
+<li><code>nonPositive(errorFn?: DefaultErrorFn[&#39;bigIntNonPositive&#39;]): BigIntValidationFn</code></li>
+</ul>
+<p><a href="#defaulterrorfn">DefaultErrorFn</a> contains all validation error messages.</p>
+<h3 id="-v-customize-bigint-"><code>v.customize.bigInt</code></h3>
+<pre><code class="lang-typescript">v.customize.bigInt(
+  options?: {
+    parseBigIntError? : <span class="hljs-function"><span class="hljs-params">(value: unknown)</span> =&gt;</span> <span class="hljs-built_in">string</span>,  // function that returns <span class="hljs-built_in">string</span> on parsing <span class="hljs-built_in">error</span>
+  }) // =&gt; v.BigInt
+</code></pre>
+<h2 id="booleans">Booleans</h2>
+<pre><code class="lang-typescript">v<span class="hljs-selector-class">.boolean</span><span class="hljs-selector-class">.parse</span>(true)
+v<span class="hljs-selector-class">.boolean</span><span class="hljs-selector-class">.beTrue</span>().parse(true)
+v<span class="hljs-selector-class">.boolean</span><span class="hljs-selector-class">.beFalse</span>().parse(false)
+</code></pre>
+<h3 id="-v-customize-boolean-"><code>v.customize.boolean</code></h3>
+<pre><code class="lang-typescript">v.customize.bigInt(
+  <span class="hljs-name">options</span>: {
+    parseBigIntError? : <span class="hljs-function"><span class="hljs-params">(value: unknown)</span> =&gt;</span> <span class="hljs-built_in">string</span>,  // function that returns <span class="hljs-built_in">string</span> on parsing <span class="hljs-built_in">error</span>
+  }) // =&gt; v.BigInt
+</code></pre>
+<h2 id="dates">Dates</h2>
+<p><code>v.date</code> validates <code>Date</code> instances.</p>
+<pre><code class="lang-typescript">v<span class="hljs-selector-class">.date</span><span class="hljs-selector-class">.parse</span>(new Date())
+v<span class="hljs-selector-class">.date</span><span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'2022-01-12T00:00:00.000Z'</span>) <span class="hljs-comment">// throws</span>
+</code></pre>
+<p>The following date-specific validations are provided:</p>
+<pre><code class="lang-typescript">v.date.min(<span class="hljs-keyword">new</span> Date(<span class="hljs-string">'1900-01-01'</span>), <span class="hljs-function"><span class="hljs-params">(value)</span> =&gt;</span> `<span class="javascript">${value} too old</span>`)
+v.date.max(<span class="hljs-keyword">new</span> Date(), <span class="hljs-function"><span class="hljs-params">(value)</span> =&gt;</span> `<span class="javascript">${value} too young</span>`)
+</code></pre>
+<p><strong>Coercion to Date</strong></p>
+<p><code>v.coerce.date</code> passes the input through <code>new Date(input)</code>.</p>
+<pre><code class="lang-typescript">const dateSchema = v.<span class="hljs-built_in">date</span>.coerce
+
+dateSchema.<span class="hljs-built_in">parse</span>('<span class="hljs-number">2023</span><span class="hljs-number">-01</span><span class="hljs-number">-11</span>T00:<span class="hljs-number">00</span>:<span class="hljs-number">01.000</span>Z')
+dateSchema.<span class="hljs-built_in">parse</span>('<span class="hljs-number">2023</span><span class="hljs-number">-01</span><span class="hljs-number">-11</span>')
+dateSchema.<span class="hljs-built_in">parse</span>('<span class="hljs-number">1</span>/<span class="hljs-number">11</span>/<span class="hljs-number">23</span>')
+dateSchema.<span class="hljs-built_in">parse</span>(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>('<span class="hljs-number">1</span>/<span class="hljs-number">11</span>/<span class="hljs-number">23</span>'))
+
+<span class="hljs-comment">/* invalid dates */</span>
+dateSchema.<span class="hljs-built_in">parse</span>('<span class="hljs-number">2023</span><span class="hljs-number">-13</span><span class="hljs-number">-11</span>') <span class="hljs-comment">// throws</span>
+dateSchema.<span class="hljs-built_in">parse</span>('<span class="hljs-number">0000</span><span class="hljs-number">-00</span><span class="hljs-number">-00</span>') <span class="hljs-comment">// throws</span>
+</code></pre>
+<h3 id="-v-customize-date-"><code>v.customize.date</code></h3>
+<pre><code class="lang-typescript">v.customize.date(
+  options?: {
+    parseDateError? : <span class="hljs-function"><span class="hljs-params">(value: unknown)</span> =&gt;</span> <span class="hljs-built_in">string</span>,  // function that returns <span class="hljs-built_in">string</span> on parsing <span class="hljs-built_in">error</span>
+  }) // =&gt; v.Date
+</code></pre>
+<h2 id="enums">Enums</h2>
+<p>Dilav supports three types of enums: <code>string</code> enums, Typescript enums and <code>const</code> enums.</p>
+<h3 id="-string-enums"><code>string</code> enums</h3>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> animalTypes1 = v.<span class="hljs-keyword">enum</span>([<span class="hljs-string">'Dog'</span>, <span class="hljs-string">'Cat'</span>, <span class="hljs-string">'Fish'</span>])
+// equivalent <span class="hljs-keyword">to</span> :
+<span class="hljs-keyword">const</span> animalTypes2 = v.union([<span class="hljs-string">'Dog'</span>, <span class="hljs-string">'Cat'</span>, <span class="hljs-string">'Fish'</span>], { stringLiteralUnion: <span class="hljs-literal">true</span> })
+
+type AnimalTypes = v.Infer&lt;typeof animalTypes1&gt; // <span class="hljs-string">"Dog"</span> | <span class="hljs-string">"Cat"</span> | <span class="hljs-string">"Fish"</span>
+animalTypes1.parse(<span class="hljs-string">'Dog'</span>) // =&gt; <span class="hljs-string">'Dog'</span>
+expect(() =&gt; animalTypes1.parse(<span class="hljs-string">'dog'</span>)).toThrow() // =&gt; throws
+console.<span class="hljs-built_in">log</span>(animalTypes1.definition.unionTypes) // =&gt; [<span class="hljs-string">'Dog'</span>, <span class="hljs-string">'Cat'</span>, <span class="hljs-string">'Fish'</span>]
+console.<span class="hljs-built_in">log</span>(animalTypes1.<span class="hljs-keyword">enum</span>) // =&gt; {Dog: <span class="hljs-string">'Dog'</span>, Cat: <span class="hljs-string">'Cat'</span>, Fish: <span class="hljs-string">'Fish'</span>}
+console.<span class="hljs-built_in">log</span>(animalTypes1.<span class="hljs-keyword">enum</span>.Dog === <span class="hljs-string">'Dog'</span>) // =&gt; <span class="hljs-literal">true</span>
+</code></pre>
+<p>Due to limitations of Typescript, Dilav enums can&#39;t correctly infer string arrays of type <code>string[]</code>, and so the <code>as const</code> modifier is required:</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> animalTypes = [<span class="hljs-string">'Dog'</span>, <span class="hljs-string">'Cat'</span>, <span class="hljs-string">'Fish'</span>] <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span> <span class="hljs-comment">// as const is required</span>
+<span class="hljs-keyword">const</span> animalEnum = v.<span class="hljs-keyword">enum</span>(animalTypes)
+</code></pre>
+<p>A second options parameter may be passed to <code>v.enum</code> of the type:</p>
+<p><code>{ parseStringUnion?: DefaultErrorFn[&#39;parseStringUnion&#39;] }</code></p>
+<h3 id="typescript-enums">Typescript enums</h3>
+<p>Typescript enums takes a typescript enum or any valid object as input, and on parsing if it finds a matching value (default) or key, it returns the matched value or key.</p>
+<pre><code class="lang-typescript"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">fooEnum</span></span> {
+  Cat = <span class="hljs-number">1</span>,
+  Dog,
+}
+<span class="hljs-keyword">const</span> fooEnumSchema = v.<span class="hljs-keyword">enum</span>(fooEnum)
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">FooEnumSchema</span></span> = v.Infer&lt;<span class="hljs-keyword">typeof</span> fooEnumSchema&gt; <span class="hljs-comment">// fooEnum</span>
+<span class="hljs-keyword">const</span> x1 = fooEnumSchema.parse(<span class="hljs-symbol">'Cat</span>') <span class="hljs-comment">// =&gt; 'Cat'</span>
+<span class="hljs-keyword">const</span> x2 = fooEnumSchema.parse(<span class="hljs-number">1</span>) <span class="hljs-comment">// =&gt; 1</span>
+fooEnumSchema.parse(<span class="hljs-symbol">'Rat</span>') <span class="hljs-comment">// throws</span>
+console.log(fooEnumSchema.<span class="hljs-keyword">enum</span>) <span class="hljs-comment">// =&gt; the original fooEnum</span>
+</code></pre>
+<p>A second options parameter may be passed to <code>v.enum</code> of the type:</p>
+<p><code>{ parseEnumError?: DefaultErrorFn[&#39;parseEnum&#39;]; matchType?: &#39;keyOnly&#39; | &#39;valueOnly&#39; | &#39;either&#39;  }</code></p>
+<p>The <code>matchType</code> option specifies whether the value should be matched on property key, or property value, or both. The default is<code>&#39;valueOnly&#39;</code></p>
+<h3 id="-const-enums"><code>const</code> enums</h3>
+<p>It also works with <code>const</code> objects:</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> fooEnum = {
+  Cat: <span class="hljs-number">1</span>,
+  Dog: <span class="hljs-symbol">'Dog</span>',
+} <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>
+<span class="hljs-keyword">const</span> fooEnumSchema = v.<span class="hljs-keyword">enum</span>(fooEnum)
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">FooEnumSchema</span></span> = v.Infer&lt;<span class="hljs-keyword">typeof</span> fooEnumSchema&gt; <span class="hljs-comment">// 1 | "Dog"</span>
+fooEnumSchema.parse(<span class="hljs-number">1</span>)
+fooEnumSchema.parse(<span class="hljs-symbol">'Dog</span>')
+fooEnumSchema.parse(<span class="hljs-symbol">'Cat</span>') <span class="hljs-comment">// throws</span>
+fooEnumSchema.parse(<span class="hljs-symbol">'Rat</span>') <span class="hljs-comment">// throws</span>
+console.log(fooEnumSchema.<span class="hljs-keyword">enum</span>) <span class="hljs-comment">// =&gt; the original fooEnum</span>
+</code></pre>
+<p>A second options parameter may be passed to <code>v.enum</code> of the type:</p>
+<p><code>{ parseEnumError?: DefaultErrorFn[&#39;parseEnum&#39;]; matchType?: &#39;keyOnly&#39; | &#39;valueOnly&#39; | &#39;either&#39;  }</code></p>
+<p>The <code>matchType</code> option specifies whether the value should be matched on property key, or property value, or both. The default is<code>&#39;valueOnly&#39;</code></p>
+<h2 id="optionals">Optionals</h2>
+<p>Schemas can be made optional with <code>v.optional()</code>.</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> schema = v.optional(v.string)
+schema.parse(undefined) <span class="hljs-comment">// =&gt; returns undefined</span>
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Schema</span></span> = v.Infer&lt;<span class="hljs-keyword">typeof</span> schema&gt; <span class="hljs-comment">// string | undefined</span>
+</code></pre>
+<p>Equivalently one can also call the <code>.optional()</code> method on an existing schema.</p>
+<pre><code class="lang-typescript">const <span class="hljs-keyword">user</span> <span class="hljs-title">= v</span>.object({
+  username: v.<span class="hljs-keyword">string</span>.optional(),
+})
+<span class="hljs-keyword">type</span> <span class="hljs-keyword">User</span> <span class="hljs-title">= v</span>.<span class="hljs-literal">Inf</span>er<span class="hljs-tag">&lt;typeof user&gt;</span> // { username?: <span class="hljs-keyword">string</span> | undefined };
+</code></pre>
+<p>The wrapped schema can be extracted via <code>.definition.wrappedSchema</code></p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> stringSchema = v.<span class="hljs-built_in">string</span>
+<span class="hljs-keyword">const</span> optionalString = stringSchema.<span class="hljs-keyword">optional</span>()
+optionalString.definition.wrappedSchema <span class="hljs-comment">// =&gt; stringSchema</span>
+
+<span class="hljs-comment">// alternatively one can extract it via:</span>
+<span class="hljs-keyword">const</span> unwrappedSchema = optionalString.<span class="hljs-keyword">required</span>()
+</code></pre>
+<h2 id="nullables">Nullables</h2>
+<p><code>nullable</code> types can be created with <code>v.nullable</code>:</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> nullableString = v.nullable(v.<span class="hljs-built_in">string</span>)
+nullableString.parse(<span class="hljs-string">'asdf'</span>) // =&gt; <span class="hljs-string">"asdf"</span>
+nullableString.parse(<span class="hljs-literal">null</span>) // =&gt; <span class="hljs-literal">null</span>
+</code></pre>
+<p>Or use the <code>.nullable()</code> method.</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> schema = v.string.nullable()
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Schema</span></span> = v.Infer&lt;<span class="hljs-keyword">typeof</span> schema&gt; <span class="hljs-comment">// string | null</span>
+</code></pre>
+<p>The wrapped schema can be extracted via <code>.definition.wrappedSchema</code></p>
+<pre><code class="lang-typescript">const stringSchema = v<span class="hljs-selector-class">.string</span>
+const nullableString = stringSchema.nullable()
+nullableString<span class="hljs-selector-class">.definition</span><span class="hljs-selector-class">.wrappedSchema</span> <span class="hljs-comment">// =&gt; stringSchema</span>
+</code></pre>
+<h2 id="nullishables">Nullishables</h2>
+<p><code>nullish</code> type <code>(value|undefined|null)</code> can be created with <code>v.nullishable</code>:</p>
+<pre><code class="lang-typescript">const nullishString = v.nullishable(v.<span class="hljs-keyword">string</span>)
+nullishString.<span class="hljs-built_in">parse</span>('asdf') <span class="hljs-comment">// =&gt; "asdf"</span>
+nullishString.<span class="hljs-built_in">parse</span>(<span class="hljs-built_in">null</span>) <span class="hljs-comment">// =&gt; null</span>
+nullishString.<span class="hljs-built_in">parse</span>(undefined) <span class="hljs-comment">// =&gt; undefined</span>
+</code></pre>
+<p>Or use the <code>.nullish()</code> method.</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> schema = v.string.nullish()
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Schema</span></span> = v.Infer&lt;<span class="hljs-keyword">typeof</span> schema&gt; <span class="hljs-comment">// string | null | undefined</span>
+</code></pre>
+<p>The wrapped schema can be extracted via <code>.definition.wrappedSchema</code></p>
+<pre><code class="lang-typescript">const nullishString = v<span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.nullish</span>()
+nullishString<span class="hljs-selector-class">.definition</span><span class="hljs-selector-class">.wrappedSchema</span> <span class="hljs-comment">// =&gt; v.string</span>
+</code></pre>
+<h2 id="objects">Objects</h2>
+<p>Dilav parses the object provided and by default returns the original object. However if a transformation method is applied to any one of the properties, then a new object is returned with the transformed value(s), and copies of all other properties.</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> foo = v.<span class="hljs-keyword">object</span>({
+  name: v.<span class="hljs-built_in">string</span>,
+  age: v.number,
+})
+<span class="hljs-keyword">type</span> <span class="hljs-type">Foo</span> = v.<span class="hljs-type">Infer</span>&lt;typeof foo&gt; // {  name: <span class="hljs-built_in">string</span>; age: number; }
+
+// <span class="hljs-type">The</span> `unmatchedPropertySchema` <span class="hljs-keyword">is</span> used to parse all unmatched properties <span class="hljs-keyword">of</span> an <span class="hljs-keyword">object</span>.
+// <span class="hljs-keyword">if</span> omitted the default <span class="hljs-keyword">is</span> v.never - meaning no additional properties are permitted.
+<span class="hljs-keyword">const</span> bar = v.<span class="hljs-keyword">object</span>({ name: v.<span class="hljs-built_in">string</span> }, v.<span class="hljs-built_in">any</span>)
+<span class="hljs-keyword">type</span> <span class="hljs-type">Bar</span> = v.<span class="hljs-type">Infer</span>&lt;typeof bar&gt; // { name: <span class="hljs-built_in">string</span> } &amp; { [P: keyof <span class="hljs-built_in">any</span>]: <span class="hljs-built_in">any</span>; }
+</code></pre>
+<h3 id="-definition-"><code>.definition</code></h3>
+<p>Use <code>.definition.propertySchemas</code> to access the schema for a particular key.</p>
+<pre><code class="lang-typescript">foo<span class="hljs-selector-class">.definition</span><span class="hljs-selector-class">.propertySchemas</span><span class="hljs-selector-class">.name</span><span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'string'</span>) <span class="hljs-comment">// =&gt; string schema</span>
+foo<span class="hljs-selector-class">.definition</span><span class="hljs-selector-class">.propertySchemas</span><span class="hljs-selector-class">.age</span><span class="hljs-selector-class">.parse</span>(<span class="hljs-number">1</span>) <span class="hljs-comment">// =&gt; number schema</span>
+foo<span class="hljs-selector-class">.definition</span><span class="hljs-selector-class">.unmatchedPropertySchema</span><span class="hljs-selector-class">.parse</span>(<span class="hljs-number">1</span>) <span class="hljs-comment">// =&gt; never, so throws</span>
+</code></pre>
+<h3 id="-extends-"><code>.extends</code></h3>
+<p>Additional fields can be added to an object schema with the <code>.extend</code> method.</p>
+<pre><code class="lang-typescript">const fooWithType = foo.extends({
+  <span class="hljs-keyword">type</span>: v.<span class="hljs-keyword">string</span>,
+}) // { name: <span class="hljs-keyword">string</span>; age: <span class="hljs-keyword">number</span>; <span class="hljs-keyword">type</span>: <span class="hljs-keyword">string</span>; }
+</code></pre>
+<p><code>.extend</code> will overwrite any existing fields.</p>
+<h3 id="-merge-"><code>.merge</code></h3>
+<p>Merges schemas and if they share keys, the properties of merged schema overrides the initial schema. The last schemas&#39; <code>unmatchedPropertySchema</code> will be used.</p>
+<pre><code class="lang-typescript">const foo = v.object({ <span class="hljs-attribute">items</span>: v<span class="hljs-variable">.array</span>(v<span class="hljs-variable">.string</span>) })
+const idObject = v<span class="hljs-variable">.object</span>({ id: v<span class="hljs-variable">.number</span> })
+
+const fooWithId1 = foo<span class="hljs-variable">.merge</span>(idObject)<span class="hljs-variable">.parse</span>({ items: ['A'], id: 1 })
+
+// similar to:
+const fooWithId2 = foo
+  <span class="hljs-variable">.extends</span>(idObject<span class="hljs-variable">.definition</span><span class="hljs-variable">.propertySchemas</span>, idObject<span class="hljs-variable">.definition</span><span class="hljs-variable">.unmatchedPropertySchema</span>)
+  <span class="hljs-variable">.parse</span>({ items: ['A'], id: 1 })
+</code></pre>
+<p>whilst similar, <code>.and</code> intersects each object and its properties, whereas merge overrides prior objects.</p>
+<h3 id="-pick-omit-"><code>.pick/.omit</code></h3>
+<p>Allows one to pick or omit certain keys from an object. Note this changes the schema, and will not impact any objects parsed by the changed schema. This means parsed objects will have to match the changed schema.</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> foo = v.object({
+  id: v.<span class="hljs-keyword">string</span>,
+  name: v.<span class="hljs-keyword">string</span>,
+  owners: v.<span class="hljs-keyword">array</span>(v.<span class="hljs-keyword">string</span>),
+})
+<span class="hljs-keyword">const</span> nameAndIdOnly = foo.pick(<span class="hljs-string">'name'</span>, <span class="hljs-string">'id'</span>) <span class="hljs-comment">// { name: string;id: string; }</span>
+
+<span class="hljs-keyword">const</span> omitIdAndName = foo.omit(<span class="hljs-string">'name'</span>, <span class="hljs-string">'id'</span>) <span class="hljs-comment">// { owners: string[]; }</span>
+</code></pre>
+<h3 id="-partial-"><code>.partial</code></h3>
+<p>Makes all properties optional.</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> foo = v.<span class="hljs-keyword">object</span>({ email: v.<span class="hljs-keyword">string</span>, name: v.<span class="hljs-keyword">string</span> })
+<span class="hljs-keyword">const</span> partialFoo = foo.<span class="hljs-keyword">partial</span>() <span class="hljs-comment">//  { email?: string ; name?: string ; }</span>
+<span class="hljs-keyword">const</span> partialName = foo.<span class="hljs-keyword">partial</span>(<span class="hljs-string">'name'</span>) <span class="hljs-comment">//  { email: string ; name?: string ; }</span>
+</code></pre>
+<h3 id="-deeppartial-"><code>.deepPartial</code></h3>
+<p><code>.partial</code> marks items one level down <code>optional</code>. and <code>.deepPartial</code> does it for all included objects and arrays.</p>
+<pre><code class="lang-typescript">const foo = v.object({
+  <span class="hljs-attribute">name</span>: v<span class="hljs-variable">.string</span>,
+  profile: v<span class="hljs-variable">.object</span>({ id: v<span class="hljs-variable">.number</span> }),
+  items: v<span class="hljs-variable">.array</span>(v<span class="hljs-variable">.object</span>({ value: v<span class="hljs-variable">.string</span> })),
+})
+
+const deepPartialFoo = foo<span class="hljs-variable">.deepPartial</span>()<span class="hljs-variable">.parse</span>({})
+/* {
+    name?: string | undefined;
+    <span class="hljs-attribute">profile?</span>: { id?: number | undefined; } | undefined;
+    items?: {  value?: string | undefined; }[] | undefined;
+} */
+</code></pre>
+<h3 id="-required-"><code>.required</code></h3>
+<p>The <code>.required</code> method unwraps all <code>optional</code> properties. Only shallow.</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> foo = v.<span class="hljs-keyword">object</span>({
+  email: v.<span class="hljs-built_in">string</span>.optional(),
+  name: v.<span class="hljs-built_in">string</span>.optional(),
+})
+// { email?: <span class="hljs-built_in">string</span> | undefined; name?: <span class="hljs-built_in">string</span> | undefined }
+<span class="hljs-keyword">const</span> requiredFoo = foo.required()
+// { email: <span class="hljs-built_in">string</span>; name: <span class="hljs-built_in">string</span>; }
+</code></pre>
+<h3 id="-passthrough-"><code>.passThrough</code></h3>
+<p>By default object schemas set the <code>unmatchedPropertySchema</code> to <code>v.never</code>. <code>.passThrough</code> sets it to <code>v.unknown</code>. Equivalent to <code>.catchAll(v.unknown)</code></p>
+<pre><code class="lang-typescript">const foo = v.object({ name: v<span class="hljs-selector-class">.string</span> })
+
+<span class="hljs-function"><span class="hljs-title">expect</span><span class="hljs-params">(()</span></span> =&gt;
+  foo.parse({
+    name: <span class="hljs-string">'fred'</span>,
+    extraProp: <span class="hljs-number">12</span>,
+  }),
+).toThrow()
+
+foo.passThrough().parse({
+  name: <span class="hljs-string">'fred'</span>,
+  extraProp: <span class="hljs-number">12</span>,
+}) <span class="hljs-comment">// =&gt; { name: string; } &amp; {[P: keyof Any]: unknown; }</span>
+</code></pre>
+<h3 id="-strict-"><code>.strict</code></h3>
+<p>Sets the <code>unmatchedPropertySchema</code> to <code>v.never</code>. Equivalent to <code>.catchAll(v.never)</code></p>
+<pre><code class="lang-typescript">const foo = v.object({ <span class="hljs-attribute">name</span>: v<span class="hljs-variable">.string</span> }, v<span class="hljs-variable">.unknown</span>)
+
+foo<span class="hljs-variable">.parse</span>({
+  name: 'fred',
+  extraProp: 12,
+})
+
+expect(() =&gt;
+  foo<span class="hljs-variable">.strict</span>()<span class="hljs-variable">.parse</span>({
+    name: 'fred',
+    extraProp: 12,
+  }),
+)<span class="hljs-variable">.toThrow</span>()
+</code></pre>
+<h3 id="-catchall-"><code>.catchAll</code></h3>
+<p>Sets the <code>unmatchedPropertySchema</code> to any valid schema.</p>
+<pre><code class="lang-typescript">const foo = v.object({ <span class="hljs-keyword">name</span>: v.string }).catchAll(v.<span class="hljs-keyword">number</span>)
+
+foo.parse({
+  <span class="hljs-keyword">name</span>: <span class="hljs-string">'fred'</span>,
+  extraProp: <span class="hljs-number">12</span>,
+}) // { <span class="hljs-keyword">name</span>: string; } &amp; { [P: keyof <span class="hljs-built_in">any</span>]: <span class="hljs-keyword">number</span>; }
+</code></pre>
+<h3 id="-v-object-"><code>v.object</code></h3>
+<pre><code class="lang-typescript">v.object(
+<span class="hljs-symbol">  propertySchemas:</span> { [<span class="hljs-string">key:</span> keyof any]: v.MinimumSchema },
+  unmatchedPropertySchema?: v.MinimumSchema = v.Never,
+  options?: {
+    invalidObjectFn?: DefaultErrorFn[<span class="hljs-string">'parseObject'</span>]
+    invalidObjectPropertiesFn?: DefaultErrorFn[<span class="hljs-string">'invalidObjectPropertiesFn'</span>]
+    missingProperty?: DefaultErrorFn[<span class="hljs-string">'missingProperty'</span>]
+    missingPropertyInDef?: DefaultErrorFn[<span class="hljs-string">'missingPropertyInDef'</span>]
+  }) <span class="hljs-comment">// =&gt; v.Object</span>
+</code></pre>
+<h2 id="arrays">Arrays</h2>
+<p>Dilav parses the array provided and by default returns the original unaltered array. However if a transformation method is applied to any one of array schemas, then a new array is returned with the transformed element(s).</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> array1 = v.<span class="hljs-keyword">array</span>(v.<span class="hljs-keyword">string</span>).parse([]) <span class="hljs-comment">// string[]</span>
+<span class="hljs-comment">// equivalent</span>
+<span class="hljs-keyword">const</span> array2 = v.<span class="hljs-keyword">string</span>.<span class="hljs-keyword">array</span>().parse([]) <span class="hljs-comment">// string[]</span>
+
+<span class="hljs-keyword">const</span> array3 = v
+  .<span class="hljs-keyword">array</span>([v.<span class="hljs-keyword">string</span>, v.number, v.<span class="hljs-keyword">array</span>(v.<span class="hljs-keyword">string</span>).spread, v.<span class="hljs-keyword">object</span>(<span class="hljs-comment">{ items: v.number }</span>)])
+  .parse([<span class="hljs-string">'a'</span>, <span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>, <span class="hljs-comment">{ items: 1 }</span>]) <span class="hljs-comment">// [string, number, ...string[], { items: number }]</span>
+</code></pre>
+<h3 id="-definition">.definition</h3>
+<p><code>.definition</code> accesses the schema for elements of the array.</p>
+<pre><code class="lang-typescript">const itemSchema = v.array(v.string)<span class="hljs-selector-class">.definition</span><span class="hljs-selector-class">.itemSchema</span><span class="hljs-selector-class">.parse</span>(<span class="hljs-string">'string'</span>)
+const secondElementInArray = v.array([v<span class="hljs-selector-class">.string</span>, v.number])<span class="hljs-selector-class">.definition</span><span class="hljs-selector-class">.itemSchemas</span>[<span class="hljs-number">1</span>].parse(<span class="hljs-number">1</span>)
+</code></pre>
+<h3 id="validations">validations</h3>
+<p>The following validations are supported:</p>
+<pre><code class="lang-typescript"><span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.array</span>(v.number)<span class="hljs-selector-class">.max</span>(<span class="hljs-number">3</span>)<span class="hljs-selector-class">.parse</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.array</span>(v.number)<span class="hljs-selector-class">.min</span>(<span class="hljs-number">3</span>)<span class="hljs-selector-class">.parse</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.array</span>(v.number)<span class="hljs-selector-class">.length</span>(<span class="hljs-number">3</span>)<span class="hljs-selector-class">.parse</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.array</span>(v.number)<span class="hljs-selector-class">.nonEmpty</span>()<span class="hljs-selector-class">.parse</span>([<span class="hljs-number">1</span>])
+<span class="hljs-selector-tag">v</span><span class="hljs-selector-class">.array</span>(v.number)
+  <span class="hljs-selector-class">.customValidation</span>((arrayValue) =&gt; (arrayValue.includes(<span class="hljs-number">1</span>) ? <span class="hljs-attribute">undefined </span>: <span class="hljs-string">'error'</span>))
+  <span class="hljs-selector-class">.parse</span>([<span class="hljs-number">1</span>])
+</code></pre>
+<pre><code class="lang-typescript">// <span class="hljs-keyword">type</span> call signatures:
+<span class="hljs-keyword">type</span> <span class="hljs-type">ValidationError</span> = string
+<span class="hljs-keyword">type</span> <span class="hljs-type">ArrayValidationFn</span> = (value: unknown[]) =&gt; <span class="hljs-type">ValidationError</span> | undefined
+</code></pre>
+<ul>
+<li><code>minimumArrayLength(length: number, errorFn?: DefaultErrorFn[&#39;minimumArrayLength&#39;]): ArrayValidationFn</code></li>
+<li><code>maximumArrayLength(length: number, errorFn?: DefaultErrorFn[&#39;maximumArrayLength&#39;]): ArrayValidationFn</code></li>
+<li><code>requiredArrayLength(length: number,errorFn?: DefaultErrorFn[&#39;requiredArrayLength&#39;]): ArrayValidationFn</code></li>
+<li><code>nonEmpty(errorFn?: DefaultErrorFn[&#39;arrayNonEmpty&#39;]): ArrayValidationFn</code></li>
+</ul>
+<p><a href="#defaulterrorfn">DefaultErrorFn</a> contains all validation error messages.</p>
+<h3 id="-spread-"><code>.spread</code></h3>
+<p><code>.spread</code> within an array behaves similarly to the spread <code>...</code> in Typescript. A key limitation is that whilst multiple spreads are okay, only one can have an infinite length.</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> foo = v
+  .array([v.<span class="hljs-built_in">string</span>, v.<span class="hljs-built_in">number</span>, v.array(v.<span class="hljs-built_in">string</span>).spread, v.array([v.<span class="hljs-built_in">number</span>, v.boolean]).spread])
+  .parse([<span class="hljs-string">'a'</span>, <span class="hljs-number">1</span>, <span class="hljs-string">'b'</span>, <span class="hljs-number">1</span>, <span class="hljs-literal">true</span>]) // [<span class="hljs-built_in">string</span>, <span class="hljs-built_in">number</span>, ...<span class="hljs-built_in">string</span>[], <span class="hljs-built_in">number</span>, boolean]
+</code></pre>
+<h3 id="-v-array-"><code>v.array</code></h3>
+<pre><code class="lang-typescript">type ArrayOptions = {
+  parseArray?: DefaultErrorFn[<span class="hljs-string">'parseArray'</span>]
+  invalidArrayElementsFn?: DefaultErrorFn[<span class="hljs-string">'invalidArrayElementsFn'</span>]
+  arrayDefinitionElementMustBeOptional?: DefaultErrorFn[<span class="hljs-string">'arrayDefinitionElementMustBeOptional'</span>]
+  elementRequiredAt?: DefaultErrorFn[<span class="hljs-string">'elementRequiredAt'</span>]
+  extraArrayItemsFn?: DefaultErrorFn[<span class="hljs-string">'extraArrayItemsFn'</span>]
+  restCantFollowRest?: DefaultErrorFn[<span class="hljs-string">'restCantFollowRest'</span>]
+  optionalElementCantFollowRest?: DefaultErrorFn[<span class="hljs-string">'optionalElementCantFollowRest'</span>]
+  missingItemInItemSchemas?: DefaultErrorFn[<span class="hljs-string">'missingItemInItemSchemas'</span>]
+  unableToSelectItemFromArray?: DefaultErrorFn[<span class="hljs-string">'unableToSelectItemFromArray'</span>]
+}
+v.array(<span class="hljs-string">itemSchema:</span> MinimumSchema, options?: ArrayOptions) <span class="hljs-comment">// =&gt; v.ArrayInfinite</span>
+v.array(
+<span class="hljs-symbol">  itemSchemas:</span> (MinimumSchema|MinimumArrayRestSchema)[],
+  options?: ArrayOptions
+) <span class="hljs-comment">// =&gt; v.ArrayFinite</span>
+</code></pre>
+<h2 id="unions">Unions</h2>
+<p>Unions work similar to the <code>|</code> in typescript. Each schema in the union tries to parse the value, and if one succeeds, the union parses, otherwise it will error.</p>
+<pre><code class="lang-typescript">const stringOrBool1 = v.union([v.<span class="hljs-built_in">string</span>, v.<span class="hljs-built_in">boolean</span>]).parse(<span class="hljs-symbol">'foo</span>') // =&gt; <span class="hljs-built_in">string</span> | <span class="hljs-built_in">boolean</span>
+// identical <span class="hljs-keyword">to</span>:
+const stringOrBool2 = v.<span class="hljs-built_in">string</span>.<span class="hljs-keyword">or</span>(v.<span class="hljs-built_in">boolean</span>).parse(<span class="hljs-literal">true</span>) // =&gt; <span class="hljs-built_in">string</span> | <span class="hljs-built_in">boolean</span>
+</code></pre>
+<h3 id="discriminated-unions">Discriminated Unions</h3>
+<p>Unions for objects can be computationally expensive as each property of the object must be parsed for conformance. In situations where each object has a unique discriminating key, the parser can first test for a match on only that key, and only if a match occurs will the rest of the properties be parsed for conformance.</p>
+<pre><code class="lang-typescript"><span class="hljs-title">const</span> foo = v
+  .union(
+    [
+      v.object({ <span class="hljs-class"><span class="hljs-keyword">type</span>: v.literal('<span class="hljs-type">A</span>'), <span class="hljs-keyword">data</span>: v.string }),</span>
+      v.object({ <span class="hljs-class"><span class="hljs-keyword">type</span>: v.literal('<span class="hljs-type">B</span>'), result: v.string }),</span>
+    ],
+    { discriminatedUnionKey: '<span class="hljs-class"><span class="hljs-keyword">type</span>' },</span>
+  )
+  .parse({ <span class="hljs-class"><span class="hljs-keyword">type</span>: '<span class="hljs-type">A'</span>, <span class="hljs-keyword">data</span>: '<span class="hljs-type">A</span> <span class="hljs-type">TYPE'</span> })</span>
+// =&gt; { <span class="hljs-class"><span class="hljs-keyword">type</span>: "<span class="hljs-type">A</span>"; <span class="hljs-keyword">data</span>: string } | { <span class="hljs-title">type</span>: "<span class="hljs-type">B</span>"; <span class="hljs-title">result</span>: <span class="hljs-title">string</span> }</span>
+</code></pre>
+<h3 id="string-literal-unions">String Literal Unions</h3>
+<p>One could create a union of string literals and then parse against those, however Dilav includes a performance optimised way of parsing string only unions.</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> fooBar = v.union([<span class="hljs-string">'foo'</span>, <span class="hljs-string">'bar'</span>], { stringLiteralUnion: <span class="hljs-literal">true</span> }).parse(<span class="hljs-string">'foo'</span>) // =&gt; <span class="hljs-string">'foo'</span> | <span class="hljs-string">'bar'</span>
+// equivalent:
+<span class="hljs-keyword">const</span> fooBar = v.<span class="hljs-keyword">enum</span>([<span class="hljs-string">'foo'</span>, <span class="hljs-string">'bar'</span>]).parse(<span class="hljs-string">'foo'</span>) // =&gt; <span class="hljs-string">'foo'</span> | <span class="hljs-string">'bar'</span>
+</code></pre>
+<h2 id="intersections">Intersections</h2>
+<p>Intersections are similar to <code>&amp;</code> in Typescript. In general each item in the intersection must parse without error, for the intersection to successfully parse. By default, intersection errors on the first parsing error it encounters. If one requires a complete list of errors, one can set <code>{ breakOnFirstError: false }</code> as a second option to intersection.</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> foo1 = v.intersection([
+  v.<span class="hljs-keyword">union</span>([<span class="hljs-string">'A'</span>, <span class="hljs-string">'B'</span>], { stringLiteralUnion: <span class="hljs-literal">true</span> }),
+  v.<span class="hljs-keyword">union</span>([<span class="hljs-string">'B'</span>, <span class="hljs-string">'C'</span>], { stringLiteralUnion: <span class="hljs-literal">true</span> }),
+]) <span class="hljs-comment">// =&gt; ('A'|'B') &amp; ('B'|'C') = 'B'</span>
+
+<span class="hljs-comment">// equivalent to:</span>
+<span class="hljs-keyword">const</span> foo2 = v
+  .<span class="hljs-keyword">union</span>([<span class="hljs-string">'A'</span>, <span class="hljs-string">'B'</span>], { stringLiteralUnion: <span class="hljs-literal">true</span> })
+  .and(v.<span class="hljs-keyword">union</span>([<span class="hljs-string">'B'</span>, <span class="hljs-string">'C'</span>], { stringLiteralUnion: <span class="hljs-literal">true</span> }))
+
+<span class="hljs-keyword">const</span> b = foo2.parse(<span class="hljs-string">'B'</span>) <span class="hljs-comment">// 'B'</span>
+expect(() =&gt; foo2.parse(<span class="hljs-string">'A'</span>)).toThrow()
+</code></pre>
+<p>When intersecting only object schemas a new <code>object</code> schema is returned, with each property also intersected and with the <code>unmatchedPropertySchema</code> set to an intersection of all the objects <code>unmatchedPropertySchema</code>s</p>
+<pre><code class="lang-typescript">const foo1 = v
+  .intersection([v.object({ <span class="hljs-selector-tag">a</span>: v<span class="hljs-selector-class">.string</span> }), v.object({ <span class="hljs-selector-tag">b</span>: v<span class="hljs-selector-class">.string</span> })])
+  .parse({ <span class="hljs-selector-tag">a</span>: <span class="hljs-string">'A'</span>, <span class="hljs-selector-tag">b</span>: <span class="hljs-string">'B'</span> }) <span class="hljs-comment">// =&gt; { a: 'A', b: 'B' }</span>
+
+<span class="hljs-comment">// equivalent to:</span>
+const foo2 = v
+  .object({ <span class="hljs-selector-tag">a</span>: v<span class="hljs-selector-class">.string</span> })
+  .and(v.object({ <span class="hljs-selector-tag">b</span>: v<span class="hljs-selector-class">.string</span> }))
+  .parse({ <span class="hljs-selector-tag">a</span>: <span class="hljs-string">'A'</span>, <span class="hljs-selector-tag">b</span>: <span class="hljs-string">'B'</span> }) <span class="hljs-comment">// =&gt; { a: 'A', b: 'B' }</span>
+</code></pre>
+<p>When intersecting only infinite arrays the <code>itemParser</code>&#39;s are intersected and a new array schema is returned</p>
+<pre><code class="lang-typescript">const foo1 = v
+  .intersection([v.array(v.object({ <span class="hljs-selector-tag">a</span>: v<span class="hljs-selector-class">.string</span> })), v.array(v.object({ <span class="hljs-selector-tag">b</span>: v<span class="hljs-selector-class">.string</span> }))])
+  .parse([{ <span class="hljs-selector-tag">a</span>: <span class="hljs-string">'A'</span>, <span class="hljs-selector-tag">b</span>: <span class="hljs-string">'B'</span> }]) <span class="hljs-comment">// =&gt; [{ a: 'A', b: 'B' }]</span>
+
+<span class="hljs-comment">// equivalent to:</span>
+const foo2 = v
+  .array(v.object({ <span class="hljs-selector-tag">a</span>: v<span class="hljs-selector-class">.string</span> }))
+  .and(v.array(v.object({ <span class="hljs-selector-tag">b</span>: v<span class="hljs-selector-class">.string</span> })))
+  .parse([{ <span class="hljs-selector-tag">a</span>: <span class="hljs-string">'A'</span>, <span class="hljs-selector-tag">b</span>: <span class="hljs-string">'B'</span> }]) <span class="hljs-comment">// =&gt; [{ a: 'A', b: 'B' }]</span>
+</code></pre>
+<h2 id="promises">Promises</h2>
+<p>Promises parses as follows: the promise being parsed is validated for conformance to being PromiseLike - i.e. having a <code>.then</code> and <code>.catch</code> method. If not parsing will fail. The parser returns a new Promise that wraps the parsed Promise and which acts as a proxy Promise. When <code>.then</code> or <code>.catch</code> is called those methods are called on the parsed Promise. When <code>.then</code> returns a value, it is parsed and if successful it is returned, alternatively the proxy Promise will reject with the failed validation.</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> fooPromiseSchema = v.promise(v.string)
+<span class="hljs-keyword">const</span> fooPromise1 = fooPromiseSchema.parse(<span class="hljs-built_in">Promise</span>.resolve(<span class="hljs-string">'foo'</span>)) <span class="hljs-comment">// =&gt; ValidatedPromise&lt;string&gt;</span>
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> fooPromise1 <span class="hljs-comment">// foo</span>
+<span class="hljs-keyword">const</span> fooPromise2 = fooPromiseSchema.parse(<span class="hljs-built_in">Promise</span>.resolve(<span class="hljs-number">1</span>))
+<span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">await</span> fooPromise2
+} <span class="hljs-keyword">catch</span> (e) {
+  expect(e.errors[<span class="hljs-number">0</span>]).toEqual(<span class="hljs-string">'1 is not a string'</span>)
+}
+</code></pre>
+<p>A second options parameter may be passed to <code>v.promise</code> of the type:</p>
+<p><code>{ parsePromise: DefaultErrorFn[&#39;parsePromise&#39;] }</code></p>
+<h2 id="instanceofs">InstanceOfs</h2>
+<p>Validates than an object is an <code>instanceOf</code> a particular class.</p>
+<pre><code class="lang-typescript"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> </span>{
+  prop: string
+}
+
+<span class="hljs-keyword">const</span> foo = v.instanceOf(Foo).parse(<span class="hljs-keyword">new</span> Foo())
+</code></pre>
+<p>A second options parameter may be passed to <code>v.instanceOf</code> of the type:</p>
+<p><code>{ parseInstanceOf: DefaultErrorFn[&#39;parseInstanceOf&#39;] }</code></p>
+<h2 id="records">Records</h2>
+<p>Record schemas are used to validate types such as <code>{ [k: string]: number }</code>.</p>
+<pre><code class="lang-typescript"><span class="hljs-comment">// if only one schema is supplied, it's assumed that only the values of the object will be validated:</span>
+const foo1 = v.record(v.number).parse({ <span class="hljs-selector-tag">a</span>: <span class="hljs-number">1</span> }) <span class="hljs-comment">// Record&lt;string, number&gt;</span>
+<span class="hljs-function"><span class="hljs-title">expect</span><span class="hljs-params">(()</span></span> =&gt; v.record(v.number).parse({ <span class="hljs-selector-tag">a</span>: <span class="hljs-string">'1'</span> })).toThrow()
+
+<span class="hljs-comment">// if two schemas are supplied, the first will validate the property name, and the second its value:</span>
+const foo2 = v.record(v<span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.min</span>(<span class="hljs-number">5</span>), v.number).parse({ abcde: <span class="hljs-number">1</span> }) <span class="hljs-comment">// Record&lt;string, number&gt;</span>
+<span class="hljs-function"><span class="hljs-title">expect</span><span class="hljs-params">(()</span></span> =&gt; v.record(v<span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.min</span>(<span class="hljs-number">5</span>), v.number).parse({ <span class="hljs-selector-tag">a</span>: <span class="hljs-number">1</span> })).toThrow()
+</code></pre>
+<p>As JavaScript casts all object keys to strings at this time only object keys of type string are supported. One could create a custom validator to parse numerical string property names.</p>
+<p>A third options parameter may be passed to <code>v.record</code> of the type:</p>
+<p><code>{ parseRecord?: DefaultErrorFn[&#39;parseRecord&#39;]; breakOnFirstError?: boolean  }</code></p>
+<h2 id="maps">Maps</h2>
+<pre><code class="lang-typescript">const foo = v.map([v.<span class="hljs-built_in">string</span>, v.number]).parse(new Map(<span class="hljs-string">[['apple', 1]]</span>)) // =&gt; Map&lt;<span class="hljs-built_in">string</span>, number&gt;
+expect(() =&gt; v.map([v.<span class="hljs-built_in">string</span>, v.number]).parse(new Map(<span class="hljs-string">[['apple', '1']]</span>))).toThrow()
+</code></pre>
+<p>Map schemas can be further constrained with the following validation methods.</p>
+<pre><code class="lang-typescript">v.map([v.<span class="hljs-built_in">string</span>, v.number])
+  .nonempty()
+  .parse(new Map(<span class="hljs-string">[['apple', 1]]</span>)) // must contain at least one item
+v.map([v.<span class="hljs-built_in">string</span>, v.number])
+  .min(<span class="hljs-number">1</span>)
+  .parse(new Map(<span class="hljs-string">[['apple', 1]]</span>)) // must contain <span class="hljs-number">1</span> <span class="hljs-keyword">or</span> more items
+v.map([v.<span class="hljs-built_in">string</span>, v.number])
+  .max(<span class="hljs-number">1</span>)
+  .parse(new Map(<span class="hljs-string">[['apple', 1]]</span>)) // must contain <span class="hljs-number">1</span> <span class="hljs-keyword">or</span> fewer items
+v.map([v.<span class="hljs-built_in">string</span>, v.number])
+  .size(<span class="hljs-number">1</span>)
+  .parse(new Map(<span class="hljs-string">[['apple', 1]]</span>)) // must contain <span class="hljs-number">1</span> items exactly
+v.map([v.<span class="hljs-built_in">string</span>, v.number])
+  .customValidation((valueMap) =&gt; (valueMap.size === <span class="hljs-number">1</span> ? undefined : <span class="hljs-string">'error'</span>))
+  .parse(new Map(<span class="hljs-string">[['apple', 1]]</span>))
+</code></pre>
+<p>A second options parameter may be passed to <code>v.map</code> of the type:</p>
+<p><code>{ parseMap?: DefaultErrorFn[&#39;parseMap&#39;]; breakOnFirstError?: boolean  }</code></p>
+<h2 id="sets">Sets</h2>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> foo = v.<span class="hljs-keyword">set</span>(v.number).parse(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>([<span class="hljs-number">1</span>])) <span class="hljs-comment">// =&gt; Set&lt;number&gt;</span>
+expect(() =&gt; v.<span class="hljs-keyword">set</span>(v.number).parse(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>([<span class="hljs-string">'1'</span>]))).toThrow()
+</code></pre>
+<p>Set schemas can be further constrained with the following validation methods.</p>
+<pre><code class="lang-typescript">v.<span class="hljs-keyword">set</span>(v.<span class="hljs-keyword">number</span>)
+  .nonempty()
+  .parse(<span class="hljs-keyword">new</span> Set([<span class="hljs-number">1</span>])) // must contain at least one item
+v.<span class="hljs-keyword">set</span>(v.<span class="hljs-keyword">number</span>)
+  .<span class="hljs-built_in">min</span>(<span class="hljs-number">1</span>)
+  .parse(<span class="hljs-keyword">new</span> Set([<span class="hljs-number">1</span>])) // must contain <span class="hljs-number">1</span> <span class="hljs-built_in">or</span> more <span class="hljs-built_in">items</span>
+v.<span class="hljs-keyword">set</span>(v.<span class="hljs-keyword">number</span>)
+  .<span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>)
+  .parse(<span class="hljs-keyword">new</span> Set([<span class="hljs-number">1</span>])) // must contain <span class="hljs-number">1</span> <span class="hljs-built_in">or</span> fewer <span class="hljs-built_in">items</span>
+v.<span class="hljs-keyword">set</span>(v.<span class="hljs-keyword">number</span>)
+  .size(<span class="hljs-number">1</span>)
+  .parse(<span class="hljs-keyword">new</span> Set([<span class="hljs-number">1</span>])) // must contain <span class="hljs-number">1</span> <span class="hljs-built_in">items</span> exactly
+v.<span class="hljs-keyword">set</span>(v.<span class="hljs-keyword">number</span>)
+  .customValidation((valueSet) =&gt; (valueSet.size === <span class="hljs-number">1</span> ? undefined : <span class="hljs-string">'error'</span>))
+  .parse(<span class="hljs-keyword">new</span> Set([<span class="hljs-number">1</span>]))
+</code></pre>
+<p>A second options parameter may be passed to <code>v.set</code> of the type:</p>
+<p><code>{ parseSet?: DefaultErrorFn[&#39;parseSet&#39;]; breakOnFirstError?: boolean  }</code></p>
+<h2 id="recursive-types">Recursive types</h2>
+<p>Recursive schemas can be defined but their type can&#39;t be statically inferred and will have to be provided manually:</p>
+<pre><code class="lang-typescript">const foo = v.object({ <span class="hljs-built_in">name</span>: v.string })
+
+interface RecursiveSchema extends v.Infer&lt;<span class="hljs-built_in">typeof</span> foo&gt; {
+  <span class="hljs-built_in">items</span>: this[]
+}
+
+const recursiveSchema: v.Lazy&lt;RecursiveSchema&gt; = foo.extends({
+  <span class="hljs-built_in">items</span>: v.lazy(() =&gt; recursiveSchema.<span class="hljs-built_in">array</span>()),
+})
+
+const x1 = recursiveSchema.parse({
+  <span class="hljs-built_in">name</span>: <span class="hljs-string">'A'</span>,
+  <span class="hljs-built_in">items</span>: [
+    {
+      <span class="hljs-built_in">name</span>: <span class="hljs-string">'B'</span>,
+      <span class="hljs-built_in">items</span>: [
+        {
+          <span class="hljs-built_in">name</span>: <span class="hljs-string">'C'</span>,
+          <span class="hljs-built_in">items</span>: [],
+        },
+      ],
+    },
+  ],
+})
+</code></pre>
+<p>Despite supporting recursive schemas, passing cyclical data will cause an infinite loop.</p>
+<h2 id="functions">Functions</h2>
+<p>Once can define function schemas that validate inputs and outputs of any function. Functions are defined as follows:</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> foo1 = v.function()
+type Foo1 = v.Infer&lt;<span class="hljs-keyword">typeof</span> foo1&gt; <span class="hljs-comment">// =&gt; (...args: never[]) =&gt; never</span>
+
+<span class="hljs-keyword">const</span> bar1 = v.function({ args: [v.<span class="hljs-keyword">string</span>], returns: v.<span class="hljs-keyword">void</span> }) <span class="hljs-comment">// =&gt; (args_0: string) =&gt; void</span>
+<span class="hljs-comment">// equivalent</span>
+<span class="hljs-keyword">const</span> bar2 = v.function({ parameters: v.array([v.<span class="hljs-keyword">string</span>]), returns: v.<span class="hljs-keyword">void</span> }) <span class="hljs-comment">// =&gt; (args_0: string) =&gt; void</span>
+<span class="hljs-comment">// equivalent</span>
+<span class="hljs-keyword">const</span> bar3 = v.function().args(v.<span class="hljs-keyword">string</span>).returns(v.<span class="hljs-keyword">void</span>)
+<span class="hljs-comment">// equivalent</span>
+<span class="hljs-keyword">const</span> bar4 = v
+  .function()
+  .parameters(v.array([v.<span class="hljs-keyword">string</span>]))
+  .returns(v.<span class="hljs-keyword">void</span>)
+
+<span class="hljs-keyword">const</span> validationFn = bar4.parse((arg) =&gt; (arg === <span class="hljs-string">'undefined'</span> ? undefined : arg))
+validationFn(<span class="hljs-string">'undefined'</span>)
+expect(() =&gt; validationFn(<span class="hljs-string">'a'</span>)).toThrow() <span class="hljs-comment">// returns 'a' which fails validations</span>
+expect(() =&gt; validationFn(<span class="hljs-number">1</span> <span class="hljs-keyword">as</span> unknown <span class="hljs-keyword">as</span> <span class="hljs-keyword">string</span>)).toThrow() <span class="hljs-comment">// 1 is not a valid string</span>
+</code></pre>
+<p>Parsing a function returns a function that by default wraps the original function within a validation function. One can control what is returned from parsing by specifying the <code>returnedFunction</code> option. Options include:</p>
+<ul>
+<li><code>&#39;validated&#39;</code> - input parameter types and the output type is validated in the returned function (default).</li>
+<li><code>&#39;inputValidated&#39;</code> - only input parameter types are validated in the returned function</li>
+<li><code>&#39;outputValidated&#39;</code> - only the output type is validated in the returned function</li>
+<li><code>&#39;original&#39;</code> - the original function is returned without any validations wrapped around it.</li>
+</ul>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> foo1 = v.function({ args: [v.<span class="hljs-built_in">string</span>], returns: v.<span class="hljs-built_in">void</span> }, { returnedFunction: 'original' })
+<span class="hljs-keyword">const</span> fn = foo1.parse((a) =&gt; a)
+fn(<span class="hljs-number">1</span> <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>) // returns <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> won't throw <span class="hljs-keyword">as</span> fn <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> wrapped <span class="hljs-keyword">in</span> a validation function.
+</code></pre>
+<p>The options parameter may also include:</p>
+<p><code>{ parseFunctionError?: DefaultErrorFn[&#39;parseFunction&#39;] }</code></p>
+<p>One can access the input and output schemas from a function schema via:</p>
+<pre><code class="lang-typescript">const foo = v.function({ args: [v.string], returns: v<span class="hljs-selector-class">.boolean</span> })
+foo<span class="hljs-selector-class">.definition</span><span class="hljs-selector-class">.returns</span><span class="hljs-selector-class">.parse</span>(true) <span class="hljs-comment">// return type</span>
+foo<span class="hljs-selector-class">.definition</span><span class="hljs-selector-class">.parameters</span><span class="hljs-selector-class">.parse</span>([<span class="hljs-string">'hello'</span>]) <span class="hljs-comment">// parameter array type</span>
+</code></pre>
+<h2 id="custom-schemas">Custom Schemas</h2>
+<p>Custom schemas can be created by providing a function of type <code>(value:unknown)=&gt;boolean</code> which returns <code>true</code> if the value is of the supplied type, or <code>false</code> if it is not.</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> pxSchema = v.custom&lt;<span class="hljs-string">`<span class="hljs-subst">${number}</span>px`</span>&gt;<span class="hljs-function">(<span class="hljs-params">(value</span>) =&gt;</span> /^\d+px$/.test(value <span class="hljs-keyword">as</span> string))
+
+type PxSchema = v.Infer&lt;<span class="hljs-keyword">typeof</span> pxSchema&gt; <span class="hljs-comment">// `${number}px`</span>
+
+pxSchema.parse(<span class="hljs-string">'50px'</span>) <span class="hljs-comment">// =&gt; "50px"</span>
+expect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> pxSchema.parse(<span class="hljs-string">'50vw'</span>)).toThrow() <span class="hljs-comment">// throws;</span>
+</code></pre>
+<p>A second options parameter may be passed to <code>v.custom</code> of the type: <code>DefaultErrorFn[&#39;parseCustom&#39;]</code> to control the error message returned.</p>
+<h2 id="schema-methods">Schema Methods</h2>
+<p>Schemas contain the following shared methods:</p>
+<h3 id="-parse-"><code>.parse</code></h3>
+<pre><code class="lang-typescript">.parse(<span class="hljs-class"><span class="hljs-keyword">data</span>: unknown): <span class="hljs-type">T</span></span>
+</code></pre>
+<p>The <code>.parse</code> parses the <code>data</code> and returns it if it is valid. Otherwise, an error is thrown.</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> stringSchema = v.<span class="hljs-built_in">string</span>
+
+stringSchema.<span class="hljs-keyword">parse</span>('result') <span class="hljs-comment">// =&gt; returns "result"</span>
+stringSchema.<span class="hljs-keyword">parse</span>(123) <span class="hljs-comment">// throws error</span>
+</code></pre>
+<h3 id="-parseasync-"><code>.parseAsync</code></h3>
+<pre><code class="lang-typescript">.parseAsync(data:<span class="hljs-built_in">Promise</span>&lt;unknown&gt;): <span class="hljs-built_in">Promise</span>&lt;T&gt;
+<span class="hljs-keyword">const</span> stringSchema = v.string
+
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> stringSchema.parseAsync(<span class="hljs-built_in">Promise</span>.resolve(<span class="hljs-string">'result'</span>)) <span class="hljs-comment">// =&gt; returns "result"</span>
+</code></pre>
+<h3 id="-safeparse-"><code>.safeParse</code></h3>
+<pre><code class="lang-typescript"><span class="hljs-selector-class">.safeParse</span>(<span class="hljs-selector-tag">data</span><span class="hljs-selector-pseudo">:unknown)</span>: <span class="hljs-selector-tag">ResultError</span>&lt;<span class="hljs-selector-tag">T</span>&gt;
+</code></pre>
+<p><code>.safeParse</code> parses the data and returns either a result or an error in the form of a <code>ResultError&lt;T&gt;</code> - see below.</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">type</span> ValidationErrors = {
+  input: unknown
+  errors: <span class="hljs-keyword">string</span>[]
+}
+<span class="hljs-keyword">type</span> ResultError&lt;T&gt; = [error: ValidationErrors, result?: undefined] | [error: undefined, result: T]
+
+<span class="hljs-keyword">const</span> foo = v.<span class="hljs-keyword">string</span>.safeParse(<span class="hljs-string">'hello'</span>) <span class="hljs-comment">// =&gt; [undefined, 'hello']</span>
+<span class="hljs-keyword">const</span> fooResult = v.resultFromResultError(foo) <span class="hljs-comment">// =&gt; 'hello'</span>
+<span class="hljs-keyword">const</span> bar = v.<span class="hljs-keyword">string</span>.safeParse(<span class="hljs-number">12</span>) <span class="hljs-comment">// =&gt; [{ input: 12, errors: ["'12 is not a string'"] }, undefined]</span>
+<span class="hljs-keyword">const</span> barError = v.errorFromResultError(bar) <span class="hljs-comment">// =&gt; { input: 12, errors: ["'12 is not a string'"] }</span>
+<span class="hljs-keyword">const</span> barErrorString = v.firstErrorFromResultError(bar) <span class="hljs-comment">// =&gt; '12 is not a string'</span>
+</code></pre>
+<p>The result is a <em>discriminated union</em>, of type <code>[error: ValidationErrors, result?: undefined] | [error: undefined, result: T]</code> so errors can be handled conveniently:</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> <span class="hljs-literal">result</span> = v.<span class="hljs-built_in">string</span>.safeParse('world')
+<span class="hljs-keyword">if</span> (v.isError(<span class="hljs-literal">result</span>)) {
+  // handle error <span class="hljs-keyword">case</span>
+  <span class="hljs-keyword">const</span> errorResult = <span class="hljs-literal">result</span>[<span class="hljs-number">0</span>] // =&gt;  { input: unknown; errors: <span class="hljs-built_in">string</span>[] }
+  // equivalent:
+  <span class="hljs-keyword">const</span> errorResult2 = v.errorFromResultError(<span class="hljs-literal">result</span>) // =&gt;  { input: unknown; errors: <span class="hljs-built_in">string</span>[] }
+  <span class="hljs-keyword">const</span> firstErrorString = v.firstErrorFromResultError(<span class="hljs-literal">result</span>) // =&gt; <span class="hljs-built_in">string</span>
+  // equivalent:
+  <span class="hljs-keyword">const</span> firstErrorString2 = v.firstError(errorResult) // =&gt; <span class="hljs-built_in">string</span>
+} <span class="hljs-keyword">else</span> {
+  // handle success <span class="hljs-keyword">case</span>
+  <span class="hljs-keyword">const</span> stringResult = <span class="hljs-literal">result</span>[<span class="hljs-number">1</span>] // =&gt; <span class="hljs-built_in">string</span>
+  // equivalent:
+  <span class="hljs-keyword">const</span> stringResult2 = v.resultFromResultError(<span class="hljs-literal">result</span>) // =&gt; <span class="hljs-built_in">string</span>
+}
+</code></pre>
+<h3 id="-safeparseasync-"><code>.safeParseAsync</code></h3>
+<p>An asynchronous version of <code>safeParse</code>.</p>
+<pre><code class="lang-typescript">await v<span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.safeParseAsync</span>(Promise.resolve(<span class="hljs-string">'result'</span>)) <span class="hljs-comment">// =&gt; returns [undefined, "result"]</span>
+</code></pre>
+<h3 id="-optional-"><code>.optional</code></h3>
+<p>Returns an optional version of a schema.</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> optionalString = v.<span class="hljs-built_in">string</span>.<span class="hljs-keyword">optional</span>() <span class="hljs-comment">// string | undefined</span>
+<span class="hljs-comment">// equivalent to</span>
+v.<span class="hljs-keyword">optional</span>(v.<span class="hljs-built_in">string</span>)
+</code></pre>
+<h3 id="-nullable-"><code>.nullable</code></h3>
+<p>Returns a nullable version of a schema.</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> nullableString = v.<span class="hljs-built_in">string</span>.nullable() // <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span>
+// equivalent <span class="hljs-keyword">to</span>
+v.nullable(v.<span class="hljs-built_in">string</span>)
+</code></pre>
+<h3 id="-nullish-"><code>.nullish</code></h3>
+<p>Returns a &quot;nullish&quot; version of a schema.</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> nullishString = v.<span class="hljs-built_in">string</span>.nullish() // <span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span> | undefined
+// equivalent <span class="hljs-keyword">to</span>
+v.nullish(v.<span class="hljs-built_in">string</span>)
+</code></pre>
+<h3 id="-array-"><code>.array</code></h3>
+<p>Returns an array schema for the given type:</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> stringArray = v.<span class="hljs-built_in">string</span>.<span class="hljs-built_in">array</span>() <span class="hljs-comment">// string[]</span>
+<span class="hljs-comment">// equivalent to</span>
+v.<span class="hljs-built_in">array</span>(v.<span class="hljs-built_in">string</span>)
+</code></pre>
+<h3 id="-promise-"><code>.promise</code></h3>
+<p>Wraps schema in a promise schema:</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> stringPromise1 = v.<span class="hljs-built_in">string</span>.promise() <span class="hljs-comment">// Promise&lt;string&gt;</span>
+<span class="hljs-comment">// equivalent to</span>
+v.promise(v.<span class="hljs-built_in">string</span>)
+</code></pre>
+<h3 id="-or-"><code>.or</code></h3>
+<p>Creates a union of schemas:</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> stringOrNumber = v.<span class="hljs-built_in">string</span>.<span class="hljs-literal">or</span>(v.<span class="hljs-built_in">number</span>) // <span class="hljs-built_in">string</span> | <span class="hljs-built_in">number</span>
+
+// equivalent <span class="hljs-keyword">to</span>
+v.union([v.<span class="hljs-built_in">string</span>, v.<span class="hljs-built_in">number</span>])
+</code></pre>
+<h3 id="-and-"><code>.and</code></h3>
+<p>Creates intersection types.</p>
+<pre><code class="lang-typescript">const nameAndAge = z.object({ <span class="hljs-attribute">name</span>: v<span class="hljs-variable">.string</span> })<span class="hljs-variable">.and</span>(v<span class="hljs-variable">.object</span>({ age: v<span class="hljs-variable">.number</span> })) // { name: string } &amp; { age: number }
+
+// equivalent to
+v<span class="hljs-variable">.intersection</span>(v<span class="hljs-variable">.object</span>({ name: v<span class="hljs-variable">.string</span> }), v<span class="hljs-variable">.object</span>({ age: v<span class="hljs-variable">.number</span> }))
+</code></pre>
+<h3 id="-pipe-"><code>.pipe</code></h3>
+<p><code>.pipe()</code> - pipes the output from one schema into the input of another schema, making it possible to chain schemas together:</p>
+<pre><code class="lang-typescript">const foo = v<span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.pipe</span>(
+  v.union([<span class="hljs-string">'A'</span>, <span class="hljs-string">'B'</span>], { stringLiteralUnion: true }),
+  v.union([<span class="hljs-string">'A'</span>], { stringLiteralUnion: true }),
+) <span class="hljs-comment">// -&gt; string -&gt; 'A' | 'B' -&gt; 'A'</span>
+foo.parse(<span class="hljs-string">'A'</span>)
+<span class="hljs-function"><span class="hljs-title">expect</span><span class="hljs-params">(()</span></span> =&gt; foo.parse(<span class="hljs-string">'B'</span>)).toThrow()
+
+const schema = v<span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.transform</span>((str) =&gt; str.length).pipe(v<span class="hljs-selector-class">.number</span><span class="hljs-selector-class">.min</span>(<span class="hljs-number">5</span>))
+const z = schema.parse(<span class="hljs-string">'12345'</span>)
+<span class="hljs-function"><span class="hljs-title">expect</span><span class="hljs-params">(()</span></span> =&gt; schema.parse(<span class="hljs-string">'1235'</span>)).toThrow()
+</code></pre>
+<p><code>.pipe()</code> can work around some common issues with <code>coerce</code>:</p>
+<pre><code class="lang-typescript">const toDate = v<span class="hljs-selector-class">.date</span><span class="hljs-selector-class">.coerce</span>
+v.isResult(toDate.safeParse(null)) <span class="hljs-comment">// =&gt; true</span>
+const toDateSchema = v.union([v<span class="hljs-selector-class">.number</span>, v<span class="hljs-selector-class">.string</span>, v.date]).pipe(toDate)
+v.isResult(toDateSchema.safeParse(null)) <span class="hljs-comment">// =&gt; false</span>
+
+const toBigInt = v<span class="hljs-selector-class">.bigInt</span><span class="hljs-selector-class">.coerce</span>
+<span class="hljs-function"><span class="hljs-title">expect</span><span class="hljs-params">(()</span></span> =&gt; toBigInt.safeParse(null)).toThrow() <span class="hljs-comment">// =&gt; throws</span>
+const toBigIntSchema = v.union([v<span class="hljs-selector-class">.string</span>, v<span class="hljs-selector-class">.number</span>, v<span class="hljs-selector-class">.bigInt</span>, v.boolean]).pipe(toBigInt)
+v.isResult(toBigIntSchema.safeParse(null)) <span class="hljs-comment">// =&gt; false</span>
+</code></pre>
+<h3 id="-type-"><code>.type</code></h3>
+<p>A string of the schema type (warning: not properly tested yet!)</p>
+<h3 id="-basetype-"><code>.baseType</code></h3>
+<p>The Dilav schema type: <code>&#39;infinite array&#39; | &#39;finite array&#39; | &#39;bigint&#39; | &#39;boolean&#39; | &#39;date&#39; | &#39;enum&#39; | &#39;instanceof&#39; | &#39;intersection&#39; | &#39;literal&#39; | &#39;map&#39; | &#39;set&#39; | &#39;string&#39; | &#39;symbol&#39; | &#39;union&#39; | &#39;discriminated union&#39; | &#39;string union&#39; | &#39;optional&#39; | &#39;nullable&#39; | &#39;nullish&#39; | &#39;function&#39; | &#39;object&#39; | &#39;number&#39; | &#39;promise&#39; | &#39;record&#39; | &#39;lazy&#39; | &#39;preprocess&#39; | &#39;postprocess&#39; | &#39;custom&#39;</code></p>
+<h3 id="-customvalidation-"><code>.customValidation</code></h3>
+<p>All schemas have a <code>.customValidation</code> method, enabling one to supply any validation code that must be run as part of validation. A <code>customValidatorFn</code> must return a <code>string</code> which is the error message if validation fails, or <code>undefined</code> if validation passes.</p>
+<pre><code class="lang-typescript"><span class="hljs-comment">// customValidation&lt;S extends unknown[]&gt;( customValidatorFn: (value: Output, ...otherArgs: S)</span>
+<span class="hljs-comment">//   =&gt;ValidationError | undefined, ...otherArgs: S): Schema</span>
+<span class="hljs-comment">// example:</span>
+v.<span class="hljs-keyword">string</span>.customValidation((<span class="hljs-keyword">value</span>) =&gt; (<span class="hljs-keyword">value</span> === <span class="hljs-string">'A'</span> ? <span class="hljs-string">'cannot be A'</span> : undefined))
+</code></pre>
+<h3 id="-customvalidationasync-"><code>.customValidationAsync</code></h3>
+<p>All schemas have a <code>.customValidationAsync</code> method, enabling one to supply any validation code that must be run asynchronously as part of validation. A <code>customValidatorFn</code> must return a promise which evaluates to either a <code>string</code> which is the error message if validation fails, or <code>undefined</code> if validation passes.</p>
+<pre><code class="lang-typescript"><span class="hljs-comment">// customValidationAsync&lt;S extends unknown[]&gt;( customValidatorFn: (value: Output, ...otherArgs: S)</span>
+<span class="hljs-comment">//   =&gt; Promise&lt;ValidationError | undefined&gt;, ...otherArgs: S): Schema</span>
+<span class="hljs-comment">// example:</span>
+v.<span class="hljs-keyword">string</span>.customValidation(<span class="hljs-keyword">async</span> (<span class="hljs-keyword">value</span>) =&gt; ((<span class="hljs-keyword">await</span> IsA(<span class="hljs-keyword">value</span>)) ? <span class="hljs-string">'cannot be A'</span> : undefined))
+</code></pre>
+<h3 id="transformation-methods">transformation methods</h3>
+<p>By default Dilav returns the original unaltered parsed value. However sometimes one wants to transform that input into another value. Dilav provides the transformation methods below for that.</p>
+<p>Note: Dilav doesn&#39;t allow transformed types as inputs into <code>.and</code>, <code>.or</code>, <code>.union</code>, <code>.intersection</code>, <code>.partial</code>, <code>.deepPartial</code> as this may produce unexpected and surprising results as explained below.</p>
+<p><strong>Note:</strong> transformation methods in a way break the separation of concerns: Dilav validates that a value matches a type, whereas transformation methods transform a type. I included them because Zod includes them, however I may change my mind.</p>
+<pre><code class="lang-typescript"><span class="hljs-comment">// consider the illustrative example below.  The intersection could transform `undefined` into `A`</span>
+<span class="hljs-comment">// even though `A` may be invalid, it could transform it into `B`, a third alternative would be to return</span>
+<span class="hljs-comment">// the original input value of `undefined` as valid.</span>
+<span class="hljs-keyword">const</span> example = v
+  .intersection([v.<span class="hljs-keyword">enum</span>([<span class="hljs-string">'A'</span>, <span class="hljs-string">'B'</span>]).<span class="hljs-keyword">default</span>(<span class="hljs-string">'A'</span>), v.<span class="hljs-keyword">enum</span>([<span class="hljs-string">'B'</span>, <span class="hljs-string">'C'</span>]).<span class="hljs-keyword">default</span>(<span class="hljs-string">'B'</span>)])
+  .parse(undefined)
+
+<span class="hljs-comment">// the above is resolved by the following explicit solutions:</span>
+<span class="hljs-keyword">const</span> alt1 = v
+  .<span class="hljs-keyword">enum</span>([<span class="hljs-string">'A'</span>, <span class="hljs-string">'B'</span>])
+  .<span class="hljs-keyword">default</span>(<span class="hljs-string">'A'</span>)
+  .pipe(v.intersection([v.<span class="hljs-keyword">enum</span>([<span class="hljs-string">'A'</span>, <span class="hljs-string">'B'</span>]), v.<span class="hljs-keyword">enum</span>([<span class="hljs-string">'B'</span>, <span class="hljs-string">'C'</span>])]))
+  .parse(undefined) <span class="hljs-comment">// =&gt; throws</span>
+<span class="hljs-keyword">const</span> alt2 = v
+  .<span class="hljs-keyword">enum</span>([<span class="hljs-string">'B'</span>, <span class="hljs-string">'C'</span>])
+  .<span class="hljs-keyword">default</span>(<span class="hljs-string">'B'</span>)
+  .pipe(v.intersection([v.<span class="hljs-keyword">enum</span>([<span class="hljs-string">'A'</span>, <span class="hljs-string">'B'</span>]), v.<span class="hljs-keyword">enum</span>([<span class="hljs-string">'B'</span>, <span class="hljs-string">'C'</span>])]))
+  .parse(undefined) <span class="hljs-comment">// =&gt; B</span>
+<span class="hljs-keyword">const</span> alt3 = v
+  .<span class="hljs-keyword">union</span>([v.intersection([v.<span class="hljs-keyword">enum</span>([<span class="hljs-string">'A'</span>, <span class="hljs-string">'B'</span>]), v.<span class="hljs-keyword">enum</span>([<span class="hljs-string">'B'</span>, <span class="hljs-string">'C'</span>])]), v.undefined])
+  .parse(undefined) <span class="hljs-comment">// =&gt; undefined</span>
+</code></pre>
+<h4 id="-preprocess-"><code>.preprocess</code></h4>
+<p>Processes data before parsing</p>
+<pre><code class="lang-typescript">// preprocess runs <span class="hljs-keyword">a</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">before</span> <span class="hljs-title">parsing</span>, <span class="hljs-title">the</span> <span class="hljs-title">output</span> <span class="hljs-title">of</span> <span class="hljs-title">which</span> <span class="hljs-title">is</span> <span class="hljs-title">then</span> <span class="hljs-title">parsed</span></span>
+v.<span class="hljs-built_in">number</span>.preprocess((<span class="hljs-built_in">value</span>) =&gt; (<span class="hljs-built_in">value</span> <span class="hljs-keyword">as</span> <span class="hljs-keyword">string</span>).<span class="hljs-built_in">length</span>).parse(<span class="hljs-string">'hello'</span>)<span class="hljs-comment"> // =&gt; 5</span>
+</code></pre>
+<h4 id="-postprocess-"><code>.postprocess</code></h4>
+<p>Processes data after parsing and any validations. The input to the function is of type <code>ResultError</code> and it must return a value of type <code>ResultError</code></p>
+<pre><code class="lang-typescript"><span class="hljs-regexp">//</span> postprocess runs a function after parsing, the output <span class="hljs-keyword">of</span> which <span class="hljs-keyword">is</span> <span class="hljs-keyword">then</span> returned
+v.string.postprocess(<span class="hljs-function"><span class="hljs-params">([error, value])</span> =&gt;</span> [<span class="hljs-literal">undefined</span>, value?.toLowerCase()]).parse(<span class="hljs-string">'HELLO'</span>) <span class="hljs-regexp">//</span> =&gt; <span class="hljs-string">'hello'</span>
+</code></pre>
+<h4 id="-transform-"><code>.transform</code></h4>
+<p>Processes data after parsing and any validations. It is similar to <code>.postprocess</code> except the error case is handled automatically.</p>
+<pre><code class="lang-typescript"><span class="hljs-regexp">//</span> transform runs a function after parsing, the output <span class="hljs-keyword">of</span> which <span class="hljs-keyword">is</span> <span class="hljs-keyword">then</span> returned
+v.string.transform(<span class="hljs-function"><span class="hljs-params">(value)</span> =&gt;</span> value.toLowerCase()).parse(<span class="hljs-string">'HELLO'</span>) <span class="hljs-regexp">//</span> =&gt; <span class="hljs-string">'hello'</span>
+</code></pre>
+<h4 id="-catch-"><code>.catch</code></h4>
+<p>Replaces an error value, with the value specified.</p>
+<pre><code class="lang-typescript"><span class="hljs-comment">// if parsing returns an error, catch replaces the error with the `catchValue`</span>
+v.<span class="hljs-keyword">string</span>.<span class="hljs-keyword">catch</span>(<span class="hljs-string">'default on error'</span>).parse(<span class="hljs-number">1</span>) <span class="hljs-comment">// =&gt; 'default on error'</span>
+
+<span class="hljs-comment">// catch with objects may produce surprising results:</span>
+<span class="hljs-keyword">const</span> foo = v.<span class="hljs-keyword">object</span>({ inner: v.<span class="hljs-keyword">string</span>.<span class="hljs-keyword">catch</span>(<span class="hljs-string">'does change object'</span>) }).<span class="hljs-keyword">catch</span>({
+  inner: <span class="hljs-string">'hello'</span>,
+})
+foo.parse(undefined)) <span class="hljs-comment">// =&gt; { inner: 'hello' }</span>
+foo.parse({}) <span class="hljs-comment">// =&gt; { inner: 'does change object' }</span>
+foo.parse({ inner: undefined }) <span class="hljs-comment">// =&gt; { inner: 'does change object' }</span>
+</code></pre>
+<h4 id="-default-"><code>.default</code></h4>
+<p>If the input value is undefined, a default value is substituted.</p>
+<pre><code class="lang-typescript">// <span class="hljs-keyword">if</span> value being parsed <span class="hljs-keyword">is</span> undefined, <span class="hljs-keyword">then</span> it <span class="hljs-keyword">is</span> replaced <span class="hljs-keyword">with</span> the `defaultValue` before parsing
+v.<span class="hljs-built_in">string</span>.<span class="hljs-keyword">default</span>(<span class="hljs-symbol">'default</span> <span class="hljs-keyword">on</span> undefined').parse(undefined) // =&gt; <span class="hljs-symbol">'default</span> <span class="hljs-keyword">on</span> undefined'
+</code></pre>
+<h2 id="other-topics">Other Topics</h2>
+<h3 id="type-inference">Type inference</h3>
+<p>You can extract the Typescript type of any schema with <code>v.Infer&lt;typeof mySchema&gt;</code> .</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> stringSchema = v.string
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">StringSchema</span></span> = v.Infer&lt;<span class="hljs-keyword">typeof</span> stringSchema&gt; <span class="hljs-comment">// string</span>
+
+<span class="hljs-keyword">const</span> foo1: StringSchema = <span class="hljs-number">13</span> <span class="hljs-comment">// error</span>
+<span class="hljs-keyword">const</span> foo2: StringSchema = <span class="hljs-symbol">'hello</span>' <span class="hljs-comment">// no error</span>
+</code></pre>
+<h3 id="writing-generic-functions">Writing generic functions</h3>
+<p>Dilav provides a number of types which one can use to write generics:</p>
+<ul>
+<li><code>v.MinimumSchema</code> is the root type from which all other schemas inherit - so one can use it as a kind of <code>any</code> for schemas.</li>
+<li><code>v.MinimumArraySchema</code> - the root type from which all array schemas inherit</li>
+<li><code>v.MinimumObjectSchema</code> - the root type from which the object schema inherits</li>
+<li><code>v.MinimumArrayRestSchema</code> - the root type for <code>v.array(...).spread</code></li>
+</ul>
+<p>All Dilav schemas have one of these types associated with them:</p>
+<ul>
+<li><code>v.Boolean</code></li>
+<li><code>v.BigInt</code></li>
+<li><code>v.Date</code></li>
+<li><code>v.Enum</code></li>
+<li><code>v.InstanceOf</code></li>
+<li><code>v.Map</code></li>
+<li><code>v.Set</code></li>
+<li><code>v.Number</code></li>
+<li><code>v.Lazy</code></li>
+<li><code>v.Record</code></li>
+<li><code>v,String</code></li>
+<li><code>v.Symbol</code></li>
+<li><code>v.Function</code></li>
+<li><code>v.Custom</code></li>
+<li><code>v.Object</code></li>
+<li><code>v.Preprocess</code></li>
+<li><code>v.PostProcess</code></li>
+<li><code>v.Default</code></li>
+<li><code>v.Catch</code></li>
+<li><code>v.Union</code></li>
+<li><code>v.Optional</code></li>
+<li><code>v.Nullable</code></li>
+<li><code>v.Nullish</code></li>
+<li><code>v.Promise</code></li>
+<li><code>v.Intersection</code></li>
+<li><p><code>v.Literal</code></p>
+</li>
+<li><p><code>v.VNaN</code> - the literal NaN</p>
+</li>
+<li><code>v.Undefined</code> - the literal undefined</li>
+<li><code>v.Null</code>- the literal null</li>
+<li><code>v.NullishL</code> - the literal null|undefined</li>
+<li><code>v.Any</code> - the literal any</li>
+<li><code>v.Unknown</code> - the literal unknown</li>
+<li><code>v.Never</code> - the literal never</li>
+<li><code>v.Void</code> - the literal void</li>
+</ul>
+<pre><code class="lang-typescript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">validate</span>&lt;<span class="hljs-title">T</span> <span class="hljs-title">extends</span> <span class="hljs-title">v</span>.<span class="hljs-title">MinimumSchema</span>&gt;(<span class="hljs-params">schema: T</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> schema.safeParse(x)
+}
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">foo</span>&lt;<span class="hljs-title">T</span> <span class="hljs-title">extends</span> <span class="hljs-title">v</span>.<span class="hljs-title">String</span>&gt;(<span class="hljs-params">stringSchema: T</span>) </span>{
+  <span class="hljs-keyword">return</span> stringSchema.optional()
+}
+foo(v.string.max(<span class="hljs-number">1</span>)).parse(<span class="hljs-string">'a'</span>) <span class="hljs-comment">// =&gt; string | undefined</span>
+</code></pre>
+<h3 id="error-handling">Error handling</h3>
+<p>Dilav provides a range of methods to customise it&#39;s error handling:</p>
+<pre><code class="lang-typescript"><span class="hljs-comment">// a custom error function(s) can be provided to schemas that have a .custom method:</span>
+const foo = v<span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.custom</span>({ parseStringError: () =&gt; `not <span class="hljs-selector-tag">a</span> string!` }).safeParse(<span class="hljs-number">1</span>)
+<span class="hljs-keyword">if</span> (v.isError(foo)) console.log(foo[<span class="hljs-number">0</span>]<span class="hljs-selector-class">.errors</span>[<span class="hljs-number">0</span>]) <span class="hljs-comment">// =&gt; `not a string!`</span>
+
+<span class="hljs-comment">// a custom error function can also be provided for most validations:</span>
+const result2 = v<span class="hljs-selector-class">.string</span><span class="hljs-selector-class">.max</span>(<span class="hljs-number">1</span>, () =&gt; <span class="hljs-string">'too long'</span>).safeParse(<span class="hljs-string">'12'</span>)
+<span class="hljs-keyword">if</span> (v.isError(result2)) console.log(result2[<span class="hljs-number">0</span>]<span class="hljs-selector-class">.errors</span>[<span class="hljs-number">0</span>]) <span class="hljs-comment">// =&gt; `too long`</span>
+</code></pre>
+<p>One can also set global error message functions:</p>
+<pre><code class="lang-typescript"><span class="hljs-comment">// alternatively error messages can be set globally that will be the default</span>
+<span class="hljs-comment">// for all schemas not supplied with a custom error function.</span>
+v.setGlobalErrorMessages({ <span class="hljs-attr">parseString</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-string">`that's not a string!`</span> })
+<span class="hljs-keyword">const</span> foo = v.string.safeParse(<span class="hljs-number">1</span>)
+<span class="hljs-keyword">if</span> (v.isError(foo)) <span class="hljs-built_in">console</span>.log(foo[<span class="hljs-number">0</span>].errors[<span class="hljs-number">0</span>]) <span class="hljs-comment">// =&gt; `that's not a string!`</span>
+</code></pre>
+<p>Dilav provides some helper utilities for working with results and errors:</p>
+<ul>
+<li><code>v.isError</code> - returns true if <code>ResultError</code> is an error, false otherwise</li>
+<li><code>v.isResult</code> - returns true if <code>ResultError</code> is a result, false otherwise</li>
+<li><code>v.firstError</code> - returns the first error from a <code>ValidationErrors</code> object.</li>
+<li><code>v.firstErrorFromResultError</code> - returns the first error from a <code>ResultError</code> array. Throws if it&#39;s a result.</li>
+<li><code>v.resultFromResultError</code> - returns the results from a <code>ResultError</code> array. Throws if it&#39;s an error.</li>
+<li><code>v.errorFromResultError</code> - returns the <code>ValidationErrors</code> object from a <code>ResultError</code> array. Throws if it&#39;s a result.</li>
+</ul>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> foo = v.<span class="hljs-built_in">string</span>.custom({ parseStringError: () =&gt; `<span class="hljs-literal">not</span> a <span class="hljs-built_in">string</span>!` }).safeParse(<span class="hljs-number">1</span>)
+<span class="hljs-keyword">if</span> (v.isError(foo)) {
+  console.<span class="hljs-built_in">log</span>(v.firstErrorFromResultError(foo)) // =&gt; `<span class="hljs-literal">not</span> a <span class="hljs-built_in">string</span>!`
+  console.<span class="hljs-built_in">log</span>(v.firstError(foo[<span class="hljs-number">0</span>])) // =&gt; `<span class="hljs-literal">not</span> a <span class="hljs-built_in">string</span>!`
+}
+</code></pre>
+<p>Dilav provides some useful types for working with results:</p>
+<ul>
+<li><code>v.ResultError</code> - <code>ResultError&lt;E, R&gt; = [error: E, result?: undefined] | [error: undefined, result: R]</code></li>
+<li><code>v.ValidationErrors</code> - <code>{  input: unknown;   errors: string[] }</code></li>
+<li><code>v.ValidationError</code> - the error type of thrown validation errors - inherits from <code>Error</code>, and includes the following additional properties: <code>{  input: unknown;   errors: string[], errorObject: v.ValidationErrors, readonly firstError: string  }</code></li>
+<li><code>v.SingleArrayValidationError</code> - return type of a single array error: <code>[index: number, errors: string[]]</code></li>
+<li><code>v.SingleObjectValidationError</code> - return type of a single object validation error: <code>[key: string | number | symbol, errors: string[]]</code></li>
+</ul>
+<h4 id="-defaulterrorfn-"><code>DefaultErrorFn</code></h4>
+<p>All of the global default messages than can be set are listed in the <code>errorFns.ts</code> file.</p>
